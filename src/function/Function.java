@@ -8,6 +8,7 @@ package function;
 import Koneksi.Koneksi;
 import static Koneksi.Koneksi.conn;
 import entity.MataPelajaran;
+import entity.Nilai;
 import entity.Siswa;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -65,17 +66,19 @@ public class Function  {
         return list;
     }
     
-    public boolean insertNilai(int id_siswa, int id_matpel, int nilai) throws Exception {
+    public boolean insertNilai(Nilai nilai) throws Exception {
         Koneksi connection = new Koneksi();
         boolean result = false;
         try{
-            String query = "insert into nilai_siswa.nilai (id_siswa, id_matpel, nilai) values (?,?,?)";
+            String query = "insert into nilai_siswa.nilai (id_siswa, id_matpel, uts,uas,kehadiran) values (?,?,?,?,?)";
             connection.conn = Koneksi.koneksiDb();
             connection.conn.setAutoCommit(false);
             connection.ps = conn.prepareStatement(query);
-            connection.ps.setInt(1, id_siswa);
-            connection.ps.setInt(2, id_matpel);
-            connection.ps.setInt(3, nilai);
+            connection.ps.setInt(1, nilai.getId_siswa());
+            connection.ps.setInt(2, nilai.getId_matpel());
+            connection.ps.setInt(3, nilai.getUts());
+            connection.ps.setInt(4, nilai.getUas());
+            connection.ps.setInt(5, nilai.getKehadiran());
             if(connection.ps.executeUpdate() == 1){
                 result = true;
                 connection.conn.commit();
