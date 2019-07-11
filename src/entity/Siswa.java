@@ -10,21 +10,24 @@ package entity;
  * @author Daus
  */
 public class Siswa {
-    private String id_siswa;
+    private String nis;
     private String nama_siswa;
+    private String alamat;
+    private String kelas;
+    private String kelamin;
 
     /**
      * @return the id_siswa
      */
-    public String getId_siswa() {
-        return id_siswa;
+    public String getNis() {
+        return nis;
     }
 
     /**
      * @param id_siswa the id_siswa to set
      */
-    public void setId_siswa(String id_siswa) {
-        this.id_siswa = id_siswa;
+    public void setNis(String nis) {
+        this.nis = nis;
     }
 
     /**
@@ -43,7 +46,53 @@ public class Siswa {
     
     @Override
     public String toString(){
-        return id_siswa;
+        return nis;
+    }
+
+    /**
+     * @return the alamat
+     */
+    public String getAlamat() {
+        return alamat;
+    }
+
+    /**
+     * @param alamat the alamat to set
+     */
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    /**
+     * @return the kelas
+     */
+    public String getKelas() {
+        return kelas;
+    }
+
+    /**
+     * @param kelas the kelas to set
+     */
+    public void setKelas(String kelas) {
+        this.kelas = kelas;
+    }
+
+    public void getKelas(String kelas) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the kelamin
+     */
+    public String getKelamin() {
+        return kelamin;
+    }
+
+    /**
+     * @param kelamin the kelamin to set
+     */
+    public void setKelamin(String kelamin) {
+        this.kelamin = kelamin;
     }
     
     

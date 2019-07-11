@@ -6,8 +6,8 @@
 
 package inputnilaisiswa;
 
+import Koneksi.Koneksi;
 import entity.MataPelajaran;
-import entity.Nilai;
 import entity.Siswa;
 import function.Function;
 import java.awt.event.ActionEvent;
@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,16 +31,17 @@ public class MenuAwal extends javax.swing.JFrame  {
     /** Creates new form MenuAwal
      * @throws java.lang.Exception */
     function.Function service;
-    public MenuAwal() throws SQLException {
+    public MenuAwal() throws Exception {
         try{
             initComponents();
-            buttonFormInputNilai(false,false,false,false, false, false, false,false);
+            buttonFormInputNilai(true,false,false,true);
+            actionField(false,false, false,false, false);
             service = new Function();
             loadSiswa();
             loadMatpel();
             cmbMatpel.addActionListener(new ComboBoxListener());
             cmbNamaSiswa.addActionListener(new ComboBoxListener());
-        }catch (SQLException e){
+        }catch (Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
        
@@ -63,16 +63,13 @@ public class MenuAwal extends javax.swing.JFrame  {
         jLabel3 = new javax.swing.JLabel();
         cmbMatpel = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        inpNilaiUts = new javax.swing.JTextField();
+        inpNilai = new javax.swing.JTextField();
         btnSimpan = new javax.swing.JButton();
         btnTambah = new javax.swing.JButton();
         btnKeluar = new javax.swing.JButton();
         inpNamaSiswa = new javax.swing.JTextField();
         inpMatpel = new javax.swing.JTextField();
-        inpNilaiUas = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        inpNilaiKehadiran = new javax.swing.JTextField();
+        btnBatal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,19 +97,19 @@ public class MenuAwal extends javax.swing.JFrame  {
         });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setText("Nilai UTS");
+        jLabel4.setText("Nilai");
 
-        inpNilaiUts.addActionListener(new java.awt.event.ActionListener() {
+        inpNilai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inpNilaiUtsActionPerformed(evt);
+                inpNilaiActionPerformed(evt);
             }
         });
-        inpNilaiUts.addKeyListener(new java.awt.event.KeyAdapter() {
+        inpNilai.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                inpNilaiUtsKeyPressed(evt);
+                inpNilaiKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                inpNilaiUtsKeyTyped(evt);
+                inpNilaiKeyTyped(evt);
             }
         });
 
@@ -144,37 +141,10 @@ public class MenuAwal extends javax.swing.JFrame  {
             }
         });
 
-        inpNilaiUas.addActionListener(new java.awt.event.ActionListener() {
+        btnBatal.setText("Batal");
+        btnBatal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inpNilaiUasActionPerformed(evt);
-            }
-        });
-        inpNilaiUas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                inpNilaiUasKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                inpNilaiUasKeyTyped(evt);
-            }
-        });
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("Nilai UAS");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel6.setText("Nilai Kehadiran");
-
-        inpNilaiKehadiran.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inpNilaiKehadiranActionPerformed(evt);
-            }
-        });
-        inpNilaiKehadiran.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                inpNilaiKehadiranKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                inpNilaiKehadiranKeyTyped(evt);
+                btnBatalActionPerformed(evt);
             }
         });
 
@@ -189,26 +159,27 @@ public class MenuAwal extends javax.swing.JFrame  {
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2))
-                    .addComponent(btnTambah)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                    .addComponent(btnTambah))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(inpNilaiKehadiran, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cmbMatpel, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmbNamaSiswa, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(33, 33, 33)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(inpMatpel, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
-                            .addComponent(inpNamaSiswa)))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inpNilaiUts, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inpNilaiUas, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(cmbMatpel, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbNamaSiswa, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(33, 33, 33)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(inpMatpel, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                    .addComponent(inpNamaSiswa)))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inpNilai, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBatal)
+                        .addGap(18, 18, 18)
                         .addComponent(btnSimpan)
-                        .addGap(50, 50, 50)
+                        .addGap(18, 18, 18)
                         .addComponent(btnKeluar)))
                 .addContainerGap(191, Short.MAX_VALUE))
         );
@@ -230,21 +201,14 @@ public class MenuAwal extends javax.swing.JFrame  {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(inpNilaiUts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(inpNilai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(inpNilaiUas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(inpNilaiKehadiran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTambah)
                     .addComponent(btnSimpan)
-                    .addComponent(btnKeluar))
-                .addContainerGap(95, Short.MAX_VALUE))
+                    .addComponent(btnTambah)
+                    .addComponent(btnKeluar)
+                    .addComponent(btnBatal))
+                .addContainerGap(180, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -253,11 +217,11 @@ public class MenuAwal extends javax.swing.JFrame  {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -271,12 +235,15 @@ public class MenuAwal extends javax.swing.JFrame  {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbMatpelActionPerformed
 
-    private void inpNilaiUtsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiUtsActionPerformed
+    private void inpNilaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_inpNilaiUtsActionPerformed
+    }//GEN-LAST:event_inpNilaiActionPerformed
     
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-        buttonFormInputNilai(true, true, true, true, false, false, true, true);
+        buttonFormInputNilai(false, true, true, false);
+        actionField(true, true, true, true, true);
+        inpNamaSiswa.setEditable(false);
+        inpMatpel.setEditable(false);
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void inpNamaSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNamaSiswaActionPerformed
@@ -287,65 +254,37 @@ public class MenuAwal extends javax.swing.JFrame  {
         // TODO add your handling code here:
     }//GEN-LAST:event_inpMatpelActionPerformed
 
-    private void inpNilaiUtsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUtsKeyPressed
+    private void inpNilaiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiKeyPressed
 
-    }//GEN-LAST:event_inpNilaiUtsKeyPressed
+    }//GEN-LAST:event_inpNilaiKeyPressed
 
-    private void inpNilaiUtsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUtsKeyTyped
+    private void inpNilaiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiKeyTyped
         if(!Character.isDigit(evt.getKeyChar())){
             evt.consume();
         }
-    }//GEN-LAST:event_inpNilaiUtsKeyTyped
+    }//GEN-LAST:event_inpNilaiKeyTyped
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-
+        
         int flag;
-        Nilai nilai = new Nilai();
         flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menyimpan ?","Konfirmasi", JOptionPane.YES_NO_OPTION);
         if(flag == 0){
-            
             int id_siswa = Integer.parseInt(cmbNamaSiswa.getSelectedItem().toString());
             int id_matpel = Integer.parseInt(cmbMatpel.getSelectedItem().toString());
-            int uts = Integer.parseInt(inpNilaiUts.getText().toString());
-            int uas = Integer.parseInt(inpNilaiUas.getText().toString());
-            int kehadiran = Integer.parseInt(inpNilaiKehadiran.getText().toString());
-            
-            nilai.setId_siswa(id_siswa);
-            nilai.setId_matpel(id_matpel);
-            nilai.setUts(uts);
-            nilai.setUas(uas);
-            nilai.setKehadiran(kehadiran);
+            int nilai = Integer.parseInt(inpNilai.getText().toString());
             try {
-                loadInsertNilai(nilai);
+                loadInsertNilai(id_siswa, id_matpel, nilai);
             } catch (Exception ex) {
                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
 
-    private void inpNilaiUasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiUasActionPerformed
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_inpNilaiUasActionPerformed
-
-    private void inpNilaiUasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUasKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inpNilaiUasKeyPressed
-
-    private void inpNilaiUasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUasKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inpNilaiUasKeyTyped
-
-    private void inpNilaiKehadiranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiKehadiranActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inpNilaiKehadiranActionPerformed
-
-    private void inpNilaiKehadiranKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiKehadiranKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inpNilaiKehadiranKeyPressed
-
-    private void inpNilaiKehadiranKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiKehadiranKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inpNilaiKehadiranKeyTyped
+        actionField(false, false, false, false, false);
+        buttonFormInputNilai(true, false, false, true);
+    }//GEN-LAST:event_btnBatalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -387,6 +326,7 @@ public class MenuAwal extends javax.swing.JFrame  {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnKeluar;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
@@ -394,20 +334,16 @@ public class MenuAwal extends javax.swing.JFrame  {
     private javax.swing.JComboBox cmbNamaSiswa;
     private javax.swing.JTextField inpMatpel;
     private javax.swing.JTextField inpNamaSiswa;
-    private javax.swing.JTextField inpNilaiKehadiran;
-    private javax.swing.JTextField inpNilaiUas;
-    private javax.swing.JTextField inpNilaiUts;
+    private javax.swing.JTextField inpNilai;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
     
-    private void loadSiswa() throws SQLException{
+    private void loadSiswa() throws Exception{
         cmbNamaSiswa.removeAllItems();
         List<Siswa> siswa = service.getAllSiswa();
         cmbNamaSiswa.addItem("--Pilih--");
@@ -417,7 +353,7 @@ public class MenuAwal extends javax.swing.JFrame  {
         } 
     }
     
-    private void loadMatpel() throws SQLException{
+    private void loadMatpel() throws Exception{
         cmbMatpel.removeAllItems();
         List<MataPelajaran> matpel = service.getAllMatpel();
         cmbMatpel.addItem("--Pilih--");
@@ -427,21 +363,24 @@ public class MenuAwal extends javax.swing.JFrame  {
         } 
     }
     
-    private void loadInsertNilai(Nilai nilai) throws Exception {
-        service.insertNilai(nilai);
+    private void loadInsertNilai(int id_siswa, int id_matpel, int nilai) throws Exception {
+        service.insertNilai(id_siswa, id_matpel, nilai);
         clearField();
-        buttonFormInputNilai(false, false, false, false, false, false, false, false);
     }
     
-    public void buttonFormInputNilai(boolean simpan, boolean siswa,boolean matpel,boolean uts, boolean nama, boolean nama_matpel, boolean kehadiran, boolean uas) {
+    public void buttonFormInputNilai(boolean tambah, boolean batal,boolean simpan,boolean keluar) {
+        btnTambah.setEnabled(tambah);
+        btnBatal.setEnabled(batal);
         btnSimpan.setEnabled(simpan);
+        btnKeluar.setEnabled(keluar);
+    }
+    
+    private void actionField(boolean siswa, boolean matpel, boolean nilai, boolean nama, boolean nama_matpel) {
         cmbNamaSiswa.setEnabled(siswa);
         cmbMatpel.setEnabled(matpel);
-        inpNilaiUts.setEnabled(uts);
+        inpNilai.setEnabled(nilai);
         inpNamaSiswa.setEnabled(nama);
         inpMatpel.setEnabled(nama_matpel);
-        inpNilaiKehadiran.setEnabled(kehadiran);
-        inpNilaiUas.setEnabled(uas);
     }
     
      private class ComboBoxListener implements ActionListener{
@@ -467,9 +406,7 @@ public class MenuAwal extends javax.swing.JFrame  {
      public void clearField() {
          inpMatpel.setText("");
          inpNamaSiswa.setText("");
-         inpNilaiUts.setText("");
-         inpNilaiUas.setText("");
-         inpNilaiKehadiran.setText("");
+         inpNilai.setText("");
          cmbMatpel.setSelectedItem("--Pilih--");
          cmbNamaSiswa.setSelectedItem("--Pilih--");
      }
