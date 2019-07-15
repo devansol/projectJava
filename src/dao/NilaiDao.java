@@ -23,7 +23,7 @@ public class NilaiDao {
         this.conn = conn;
     }
     
-    public boolean insertNilai(int id_siswa, int id_matpel, int nilai) throws Exception {
+    public boolean insertNilai(int id_siswa, int id_matpel, int nilai, String tahun_ajaran) throws Exception {
         boolean result = false;
         try{
             String query = "insert into nilai_siswa.nilai (id_siswa, id_matpel, nilai) values (?,?,?)";

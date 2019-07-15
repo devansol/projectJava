@@ -9,6 +9,8 @@ import entity.MataPelajaran;
 import entity.Siswa;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,18 +31,21 @@ public class FormNilai extends javax.swing.JFrame {
     NilaiService nilaiService;
     /**
      * Creates new form FormNilai
+     * @throws java.lang.Exception
      */
     public FormNilai() throws Exception {
         initComponents();
         siswaService = new SiswaService();
         guruService = new GuruService();
         matpelService = new MatpelService();
+        nilaiService = new NilaiService();
         loadSiswa();
         loadMatpel();
+        tahunAjaran();
         cmbMatpel.addActionListener(new ComboBoxListener());
         cmbNamaSiswa.addActionListener(new ComboBoxListener());
         actionButton(true, false, false, true);
-        actionField(false, false, false, false, false);
+        actionField(false, false, false, false, false, false);
     }
 
     /**
@@ -66,6 +71,8 @@ public class FormNilai extends javax.swing.JFrame {
         inpNamaSiswa = new javax.swing.JTextField();
         inpMatpel = new javax.swing.JTextField();
         btnBatal = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        cmbTahunAjaran = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -144,6 +151,16 @@ public class FormNilai extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Tahun Ajaran");
+
+        cmbTahunAjaran.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbTahunAjaran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTahunAjaranActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -155,7 +172,8 @@ public class FormNilai extends javax.swing.JFrame {
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addComponent(jLabel2))
-                    .addComponent(btnTambah))
+                    .addComponent(btnTambah)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
@@ -169,7 +187,8 @@ public class FormNilai extends javax.swing.JFrame {
                                     .addComponent(inpMatpel)
                                     .addComponent(inpNamaSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inpNilai, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(inpNilai, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBatal)
@@ -198,13 +217,17 @@ public class FormNilai extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(inpNilai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSimpan)
                     .addComponent(btnTambah)
                     .addComponent(btnKeluar)
                     .addComponent(btnBatal))
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -253,8 +276,9 @@ public class FormNilai extends javax.swing.JFrame {
             int id_siswa = Integer.parseInt(cmbNamaSiswa.getSelectedItem().toString());
             int id_matpel = Integer.parseInt(cmbMatpel.getSelectedItem().toString());
             int nilai = Integer.parseInt(inpNilai.getText().toString());
+            String tahun_ajaran = cmbTahunAjaran.getSelectedItem().toString();
             try {
-                loadInsertNilai(id_siswa, id_matpel, nilai);
+                loadInsertNilai(id_siswa, id_matpel, nilai, tahun_ajaran);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
@@ -283,7 +307,7 @@ public class FormNilai extends javax.swing.JFrame {
     
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         actionButton(false,true , true, false);
-        actionField(true, true, true, true, true);
+        actionField(true, true, true, true, true, true);
         inpNamaSiswa.setEditable(false);
         inpMatpel.setEditable(false);
     }//GEN-LAST:event_btnTambahActionPerformed
@@ -298,9 +322,14 @@ public class FormNilai extends javax.swing.JFrame {
 
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         // TODO add your handling code here:
-        actionField(false, false, false, false, false);
+        actionField(false, false, false, false, false, false);
         actionButton(true, false, false, true);
+        clearField();
     }//GEN-LAST:event_btnBatalActionPerformed
+
+    private void cmbTahunAjaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTahunAjaranActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTahunAjaranActionPerformed
 
     /**
      * @param args the command line arguments
@@ -345,8 +374,8 @@ public class FormNilai extends javax.swing.JFrame {
         });
     }
     
-    private void loadInsertNilai(int id_siswa, int id_matpel, int nilai) throws Exception {
-        nilaiService.insertNilai(id_siswa, id_matpel, nilai);
+    private void loadInsertNilai(int id_siswa, int id_matpel, int nilai, String tahun_ajaran) throws Exception {
+        nilaiService.insertNilai(id_siswa, id_matpel, nilai, tahun_ajaran);
         clearField();
     }
     
@@ -376,6 +405,7 @@ public class FormNilai extends javax.swing.JFrame {
         cmbMatpel.setSelectedItem("--Pilih--");
         inpMatpel.setText("");
         inpNilai.setText("");
+        cmbTahunAjaran.setSelectedItem("--Pilih--");
     }
     
     private void actionButton(boolean tambah, boolean batal, boolean simpan, boolean keluar) {
@@ -385,14 +415,27 @@ public class FormNilai extends javax.swing.JFrame {
         btnKeluar.setEnabled(keluar);
     }
     
-    private void actionField(boolean nis, boolean nama_siswa, boolean kode_matpel, boolean matpel, boolean nilai) {
+    private void actionField(boolean nis, boolean nama_siswa, boolean kode_matpel, boolean matpel, boolean nilai, boolean tahun_ajaran) {
         cmbNamaSiswa.setEnabled(nis);
         inpNamaSiswa.setEnabled(nama_siswa);
         cmbMatpel.setEnabled(kode_matpel);
         inpMatpel.setEnabled(matpel);
         inpNilai.setEnabled(nilai);
+        cmbTahunAjaran.setEnabled(tahun_ajaran);
     }
-
+    
+    private void tahunAjaran() throws Exception{
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int years = year + 1;
+        cmbTahunAjaran.removeAllItems();
+        cmbTahunAjaran.addItem("--Pilih--");
+        for(int i = 2010 ; i <= year; i++){
+            for(int j = i ; j <= i; j++){
+                int newYear = j+1;
+                cmbTahunAjaran.addItem(i + " / " + newYear);
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnKeluar;
@@ -400,6 +443,7 @@ public class FormNilai extends javax.swing.JFrame {
     private javax.swing.JButton btnTambah;
     private javax.swing.JComboBox cmbMatpel;
     private javax.swing.JComboBox cmbNamaSiswa;
+    private javax.swing.JComboBox cmbTahunAjaran;
     private javax.swing.JTextField inpMatpel;
     private javax.swing.JTextField inpNamaSiswa;
     private javax.swing.JTextField inpNilai;
@@ -407,6 +451,7 @@ public class FormNilai extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

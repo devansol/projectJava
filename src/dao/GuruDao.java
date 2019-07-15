@@ -9,6 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import entity.Guru;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  *
  * @author Daus
@@ -72,6 +76,25 @@ public class GuruDao {
             ps.close();
         }
         return result;
-    } 
-
+    }
+    
+    public boolean loginGuru(Guru data) throws Exception {
+        boolean result = false;
+        try{
+            String query = "select 1 from guru where email = ? and password = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, data.getEmail());
+            ps.setString(2, data.getPassword());
+            rs = ps.executeQuery();
+            if(rs.next()){
+               result = true;
+            }
+        }catch(Exception e) {
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+            rs.close();
+        }
+        return result;
+    }
 }

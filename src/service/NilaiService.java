@@ -14,13 +14,13 @@ import dao.NilaiDao;
 public class NilaiService extends KoneksiDb {
     NilaiDao dao = new NilaiDao();
     
-     public boolean insertNilai(int id_siswa, int id_matpel, int nilai) throws Exception {
+     public boolean insertNilai(int id_siswa, int id_matpel, int nilai, String tahun_ajaran) throws Exception {
          boolean result = false;
          try{
             conn = getConnection();
             conn.setAutoCommit(false);
             dao.setConnection(conn);
-            result = dao.insertNilai(id_siswa, id_matpel, nilai);
+            result = dao.insertNilai(id_siswa, id_matpel, nilai, tahun_ajaran);
             if(result){
                 conn.commit();
             }

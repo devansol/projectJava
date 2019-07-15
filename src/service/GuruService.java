@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 
 import dao.GuruDao;
 import entity.Guru;
+import java.util.ArrayList;
+import java.util.List;
 public class GuruService extends KoneksiDb {
     GuruDao guru = new GuruDao();
     
@@ -25,7 +27,6 @@ public class GuruService extends KoneksiDb {
             guru.setConnection(conn);
             nip = guru.nipGuru();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new Exception(e.getMessage());
         }finally{
             conn.close();
@@ -45,7 +46,20 @@ public class GuruService extends KoneksiDb {
             }
         } catch (Exception e) {
             conn.rollback();
-            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return result;
+    }
+    
+    public boolean loginGuru(Guru data) throws Exception {
+        boolean result = false;
+        try{
+            conn = getConnection();
+            guru.setConnection(conn);
+            result = guru.loginGuru(data);
+        }catch(Exception e){
             throw new Exception(e.getMessage());
         }finally{
             conn.close();
