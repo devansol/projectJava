@@ -131,6 +131,11 @@ public class FormNilai extends javax.swing.JFrame {
         });
 
         btnKeluar.setText("Keluar");
+        btnKeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKeluarActionPerformed(evt);
+            }
+        });
 
         inpNamaSiswa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -330,6 +335,15 @@ public class FormNilai extends javax.swing.JFrame {
     private void cmbTahunAjaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTahunAjaranActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTahunAjaranActionPerformed
+
+    private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
+        // TODO add your handling code here:
+        FormMenuUtama formMenuUtama = new FormMenuUtama();
+        formMenuUtama.setVisible(true);
+        formMenuUtama.setTitle("Menu Utama");
+        formMenuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnKeluarActionPerformed
 
     /**
      * @param args the command line arguments

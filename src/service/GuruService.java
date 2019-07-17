@@ -15,7 +15,9 @@ import javax.swing.JOptionPane;
 import dao.GuruDao;
 import entity.Guru;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 public class GuruService extends KoneksiDb {
     GuruDao guru = new GuruDao();
     
@@ -53,17 +55,17 @@ public class GuruService extends KoneksiDb {
         return result;
     }
     
-    public boolean loginGuru(Guru data) throws Exception {
-        boolean result = false;
+    public Map<String,Object> loginGuru(Guru data) throws Exception {
+        Map<String,Object> map = new HashMap<>();
         try{
             conn = getConnection();
             guru.setConnection(conn);
-            result = guru.loginGuru(data);
+            map = guru.loginGuru(data);
         }catch(Exception e){
             throw new Exception(e.getMessage());
         }finally{
             conn.close();
         }
-        return result;
+        return map;
     }
 }

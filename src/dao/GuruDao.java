@@ -9,10 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import entity.Guru;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import main.FormMenuUtama;
 /**
  *
  * @author Daus
@@ -21,7 +20,6 @@ public class GuruDao {
     private Connection conn = null;
     private PreparedStatement ps = null;
     private ResultSet rs= null;
-            
     public void setConnection(Connection conn) throws Exception{
         this.conn = conn;
     }
@@ -78,16 +76,24 @@ public class GuruDao {
         return result;
     }
     
-    public boolean loginGuru(Guru data) throws Exception {
-        boolean result = false;
+    public Map<String,Object> loginGuru(Guru data) throws Exception {
+       Map<String,Object> map = new HashMap<String, Object>();
+        Guru entity = new Guru();
         try{
-            String query = "select 1 from guru where email = ? and password = ?";
+            String query = "select 1,nip,nama_guru,akses from guru where email = ? and password = ?";
             ps = conn.prepareStatement(query);
             ps.setString(1, data.getEmail());
             ps.setString(2, data.getPassword());
             rs = ps.executeQuery();
             if(rs.next()){
-               result = true;
+                if(rs.getString(1).equals("1")){
+                  map.put("status", true);
+                  map.put("nip", rs.getString("nip"));
+                  map.put("nama_guru", rs.getString("nama_guru"));
+                  map.put("akses", rs.getString("akses"));
+                }
+            }else{
+                map.put("status", false);
             }
         }catch(Exception e) {
             throw new Exception(e.getMessage());
@@ -95,6 +101,6 @@ public class GuruDao {
             ps.close();
             rs.close();
         }
-        return result;
+        return map;
     }
 }
