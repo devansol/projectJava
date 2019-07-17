@@ -5,12 +5,9 @@
  */
 package main;
 
-import com.mysql.jdbc.interceptors.SessionAssociationInterceptor;
 import entity.Guru;
 import entity.Session;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -174,9 +171,16 @@ public class FormLogin extends javax.swing.JFrame {
         Guru entity = new Guru();
         map = guruService.loginGuru(data);
         if(map.get("status").toString().equals("true")){
-            Session.setSessionName(map.get("nama_guru").toString());
-            Session.setSessionNip(map.get("nip").toString());
-            Session.setSessionAkses(map.get("akses").toString());
+            if(map.get("flag").toString().equals("2")){
+                Session.setSessionName(map.get("nama_admin").toString());
+                Session.setSessionNip(map.get("id_admin").toString());
+                Session.setSessionAkses(map.get("akses").toString());
+            }else{
+                Session.setSessionName(map.get("nama_guru").toString());
+                Session.setSessionNip(map.get("nip").toString());
+                Session.setSessionAkses(map.get("akses").toString());
+            }
+            
             JOptionPane.showMessageDialog(null, "Berhasil Login !");
             FormMenuUtama menuUtama = new FormMenuUtama();      
             menuUtama.setVisible(true);

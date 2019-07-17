@@ -72,15 +72,15 @@
                           <Component id="labelNamaGuru" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="btnGuru" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnInputNilai" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnSiswa" alignment="0" pref="89" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnCetak" max="32767" attributes="0"/>
-                              <Component id="btnLogout" max="32767" attributes="0"/>
+                              <Component id="btnSiswa" pref="98" max="32767" attributes="0"/>
+                              <Component id="btnInputNilai" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="btnGuru" min="-2" pref="103" max="-2" attributes="0"/>
+                              <Component id="btnCetak" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnLogout" alignment="0" min="-2" pref="103" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -96,19 +96,19 @@
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="labelNamaGuru" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnInputNilai" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnLogout" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnSiswa" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCetak" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="btnGuru" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="145" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnGuru" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnSiswa" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnLogout" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="175" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

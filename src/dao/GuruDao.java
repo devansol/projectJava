@@ -91,9 +91,23 @@ public class GuruDao {
                   map.put("nip", rs.getString("nip"));
                   map.put("nama_guru", rs.getString("nama_guru"));
                   map.put("akses", rs.getString("akses"));
+                  map.put("flag", 1);
                 }
             }else{
-                map.put("status", false);
+                    String query1 = "select 1,id_admin,nama_admin from admin where email = ? and password = ?";
+                    ps = conn.prepareStatement(query1);
+                    ps.setString(1, data.getEmail());
+                    ps.setString(2, data.getPassword());
+                    rs = ps.executeQuery();
+                    if(rs.next()){
+                        map.put("status", true);
+                        map.put("id_admin", rs.getString("id_admin"));
+                        map.put("nama_admin", rs.getString("nama_admin"));
+                        map.put("akses", 3);
+                        map.put("flag", 2);
+                    }else{
+                        map.put("status", false);
+                    }
             }
         }catch(Exception e) {
             throw new Exception(e.getMessage());

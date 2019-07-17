@@ -103,6 +103,11 @@ public class FormSiswa extends javax.swing.JFrame {
         });
 
         btnKeluar.setText("Keluar");
+        btnKeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKeluarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -245,6 +250,15 @@ public class FormSiswa extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
+        // TODO add your handling code here:
+        FormMenuUtama menuUtama = new FormMenuUtama();
+        menuUtama.setVisible(true);
+        menuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        menuUtama.setTitle("Menu Utama");
+        this.setVisible(false);
+    }//GEN-LAST:event_btnKeluarActionPerformed
 
     /**
      * @param args the command line arguments

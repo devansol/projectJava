@@ -89,6 +89,11 @@ public class FormGuru extends javax.swing.JFrame {
         });
 
         btnKeluar.setText("Keluar");
+        btnKeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKeluarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -220,6 +225,15 @@ public class FormGuru extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
 
+    private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
+        // TODO add your handling code here:
+        FormMenuUtama menuUtama = new FormMenuUtama();
+        menuUtama.setVisible(true);
+        menuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        menuUtama.setTitle("Menu Utama");
+        this.setVisible(false);
+    }//GEN-LAST:event_btnKeluarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -299,4 +313,8 @@ public class FormGuru extends javax.swing.JFrame {
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblEmail1;
     // End of variables declaration//GEN-END:variables
+
+    private FormMenuUtama FormMenuUtama() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
