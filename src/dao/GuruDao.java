@@ -9,7 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import entity.Guru;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import main.FormMenuUtama;
 /**
@@ -58,14 +60,14 @@ public class GuruDao {
     public boolean insertGuru(Guru data) throws Exception{
         boolean result = false;
         try{
-            String query = "insert into nilai_siswa.guru(nip,nama_guru,email,password) values (?,?,?,?)";
+            String query = "insert into nilai_siswa.guru(nip,nama_guru,email,password,akses) values (?,?,?,?,?)";
             ps = conn.prepareStatement(query);
             ps.setString(1, data.getNip());
             ps.setString(2, data.getNama_guru());
             ps.setString(3, data.getEmail());
             ps.setString(4, data.getPassword());
-            
-            if(ps.executeUpdate() == 1){
+            ps.setInt(5, data.getAkses());
+            if(ps.executeUpdate() > 0){
                 result = true;
             }
         }catch(Exception e){
@@ -116,5 +118,26 @@ public class GuruDao {
             rs.close();
         }
         return map;
+    }
+    
+    public List<Map<String,Object>> getAllGuru() throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        try{
+            ps = conn.prepareStatement("select * from nilai_siswa.guru");
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Map<String,Object> map = new HashMap<>();
+                map.put("nip", rs.getString("nip"));
+                map.put("nama_guru", rs.getString("nama_guru"));
+                map.put("email", rs.getString("email"));
+                list.add(map);
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+            rs.close();
+        }
+        return list; 
     }
 }

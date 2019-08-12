@@ -68,4 +68,18 @@ public class GuruService extends KoneksiDb {
         }
         return map;
     }
+    
+     public List<Map<String,Object>> getAllGuru() throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        try{
+           conn = getConnection();
+           guru.setConnection(conn);
+           list = guru.getAllGuru();
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return list; 
+    }
 }

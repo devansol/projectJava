@@ -110,7 +110,7 @@ public class FormMenuUtama extends javax.swing.JFrame {
             }
         });
 
-        btnCetak.setText("Cetak Laporan");
+        btnCetak.setText("Cetak Rapot");
         btnCetak.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCetakActionPerformed(evt);
@@ -133,10 +133,10 @@ public class FormMenuUtama extends javax.swing.JFrame {
                             .addComponent(btnSiswa, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
                             .addComponent(btnInputNilai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGuru, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCetak)
-                            .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnGuru, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                            .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                            .addComponent(btnCetak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(217, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -202,15 +202,32 @@ public class FormMenuUtama extends javax.swing.JFrame {
 
     private void btnGuruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuruActionPerformed
         // TODO add your handling code here:
-        FormGuru formGuru = new FormGuru();
-        formGuru.setVisible(true);
-        formGuru.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        formGuru.setTitle("Form Input Guru");
-        this.setVisible(false);
+        FormGuru formGuru;
+        try {
+            formGuru = new FormGuru();
+            formGuru.setVisible(true);
+            formGuru.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            formGuru.setTitle("Form Input Guru");
+            this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }//GEN-LAST:event_btnGuruActionPerformed
 
     private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
         // TODO add your handling code here:
+        FormCetakRapot formRapot;
+        try {
+            formRapot = new FormCetakRapot();
+            formRapot.setVisible(true);
+            formRapot.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            formRapot.setTitle("Form Cetak Laporan");
+            this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnCetakActionPerformed
 
     private void btnSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiswaActionPerformed

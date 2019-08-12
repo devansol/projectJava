@@ -6,23 +6,24 @@
 package main;
 
 import entity.MataPelajaran;
+import entity.NilaiEntity;
 import entity.Siswa;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import service.SiswaService;
 import service.GuruService;
 import service.MatpelService;
 import service.NilaiService;
 /**
  *
- * @author Daus
+ * @autloadhor Daus
  */
 public class FormNilai extends javax.swing.JFrame {
     SiswaService siswaService ;
@@ -42,10 +43,11 @@ public class FormNilai extends javax.swing.JFrame {
         loadSiswa();
         loadMatpel();
         tahunAjaran();
-        cmbMatpel.addActionListener(new ComboBoxListener());
-        cmbNamaSiswa.addActionListener(new ComboBoxListener());
+        loadTable();
+//        cmbMatpel.addActionListener(new ComboBoxListener());
+//        cmbNamaSiswa.addActionListener(new ComboBoxListener());
         actionButton(true, false, false, true);
-        actionField(false, false, false, false, false, false);
+        actionField(false, false, false, false, false, false,false,false,false);
     }
 
     /**
@@ -64,15 +66,27 @@ public class FormNilai extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         cmbMatpel = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        inpNilai = new javax.swing.JTextField();
+        inpNilaiUts = new javax.swing.JTextField();
         btnSimpan = new javax.swing.JButton();
         btnTambah = new javax.swing.JButton();
         btnKeluar = new javax.swing.JButton();
-        inpNamaSiswa = new javax.swing.JTextField();
-        inpMatpel = new javax.swing.JTextField();
         btnBatal = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         cmbTahunAjaran = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        inpNilaiUas = new javax.swing.JTextField();
+        inpNilaiTugas = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableNilaiSiswa = new javax.swing.JTable()
+        {
+            public boolean isCellEditable(int rowIndex, int colIndex)
+            {
+                return false; //Disallow the editing of any cell
+            }
+        };
+        jLabel8 = new javax.swing.JLabel();
+        inpKelas = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,19 +114,19 @@ public class FormNilai extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setText("Nilai");
+        jLabel4.setText("Nilai UTS");
 
-        inpNilai.addActionListener(new java.awt.event.ActionListener() {
+        inpNilaiUts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inpNilaiActionPerformed(evt);
+                inpNilaiUtsActionPerformed(evt);
             }
         });
-        inpNilai.addKeyListener(new java.awt.event.KeyAdapter() {
+        inpNilaiUts.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                inpNilaiKeyPressed(evt);
+                inpNilaiUtsKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                inpNilaiKeyTyped(evt);
+                inpNilaiUtsKeyTyped(evt);
             }
         });
 
@@ -137,18 +151,6 @@ public class FormNilai extends javax.swing.JFrame {
             }
         });
 
-        inpNamaSiswa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inpNamaSiswaActionPerformed(evt);
-            }
-        });
-
-        inpMatpel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inpMatpelActionPerformed(evt);
-            }
-        });
-
         btnBatal.setText("Batal");
         btnBatal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,6 +168,71 @@ public class FormNilai extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Nilai Tugas");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Nilai UAS");
+
+        inpNilaiUas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpNilaiUasActionPerformed(evt);
+            }
+        });
+        inpNilaiUas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                inpNilaiUasKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                inpNilaiUasKeyTyped(evt);
+            }
+        });
+
+        inpNilaiTugas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpNilaiTugasActionPerformed(evt);
+            }
+        });
+        inpNilaiTugas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                inpNilaiTugasKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                inpNilaiTugasKeyTyped(evt);
+            }
+        });
+
+        tableNilaiSiswa.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "NIS", "Nama Siswa", "Kelas", "Mata Pelajaran", "Nilai UTS", "Nilai Uas", "Nilai Tugas", "Tahun Ajaran"
+            }
+        ));
+        jScrollPane1.setViewportView(tableNilaiSiswa);
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("Kelas");
+
+        inpKelas.setEditable(false);
+        inpKelas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpKelasActionPerformed(evt);
+            }
+        });
+        inpKelas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                inpKelasKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                inpKelasKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -173,66 +240,96 @@ public class FormNilai extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(83, 83, 83)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel2))
-                    .addComponent(btnTambah)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(cmbMatpel, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cmbNamaSiswa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(33, 33, 33)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(inpMatpel)
-                                    .addComponent(inpNamaSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inpNilai, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel2)
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel3))
+                                .addGap(27, 27, 27)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(inpKelas, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cmbNamaSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cmbMatpel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(inpNilaiTugas, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(inpNilaiUts, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(inpNilaiUas, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(172, 172, 172)
+                        .addComponent(btnTambah)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnKeluar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSimpan)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBatal)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSimpan)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnKeluar)))
-                .addContainerGap(177, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(65, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addGap(56, 56, 56)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(cmbNamaSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inpNamaSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cmbMatpel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inpMatpel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(inpNilai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inpNilaiUts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inpKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(inpNilaiUas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(inpNilaiTugas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel6))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmbMatpel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSimpan)
                     .addComponent(btnTambah)
                     .addComponent(btnKeluar)
+                    .addComponent(btnSimpan)
                     .addComponent(btnBatal))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(247, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -241,100 +338,52 @@ public class FormNilai extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cmbNamaSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbNamaSiswaActionPerformed
+    private void inpNilaiTugasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiTugasKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbNamaSiswaActionPerformed
+    }//GEN-LAST:event_inpNilaiTugasKeyTyped
 
-    private void cmbMatpelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMatpelActionPerformed
+    private void inpNilaiTugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiTugasKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbMatpelActionPerformed
+    }//GEN-LAST:event_inpNilaiTugasKeyPressed
 
-    private void inpNilaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiActionPerformed
+    private void inpNilaiTugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiTugasActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_inpNilaiActionPerformed
+    }//GEN-LAST:event_inpNilaiTugasActionPerformed
 
-    private void inpNilaiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiKeyPressed
-
-    }//GEN-LAST:event_inpNilaiKeyPressed
-
-    private void inpNilaiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiKeyTyped
-        if(!Character.isDigit(evt.getKeyChar())){
-            evt.consume();
-        }
-    }//GEN-LAST:event_inpNilaiKeyTyped
-
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-
-        int flag;
-        flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menyimpan ?","Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if(flag == 0){
-            int id_siswa = Integer.parseInt(cmbNamaSiswa.getSelectedItem().toString());
-            int id_matpel = Integer.parseInt(cmbMatpel.getSelectedItem().toString());
-            int nilai = Integer.parseInt(inpNilai.getText().toString());
-            String tahun_ajaran = cmbTahunAjaran.getSelectedItem().toString();
-            try {
-                loadInsertNilai(id_siswa, id_matpel, nilai, tahun_ajaran);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
-            }
-        }
-    }//GEN-LAST:event_btnSimpanActionPerformed
-    
-    private void loadSiswa() throws Exception{
-        cmbNamaSiswa.removeAllItems();
-        List<Siswa> siswa = siswaService.getAllSiswa();
-        cmbNamaSiswa.addItem("--Pilih--");
-        
-        for(Siswa result : siswa){
-            cmbNamaSiswa.addItem(result);
-        } 
-    }
-    
-    private void loadMatpel() throws Exception{
-        cmbMatpel.removeAllItems();
-        List<MataPelajaran> matpel = matpelService.getAllMatpel();
-        cmbMatpel.addItem("--Pilih--");
-        
-        for(MataPelajaran result : matpel){
-            cmbMatpel.addItem(result);
-        } 
-    }
-    
-    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-        actionButton(false,true , true, false);
-        actionField(true, true, true, true, true, true);
-        inpNamaSiswa.setEditable(false);
-        inpMatpel.setEditable(false);
-    }//GEN-LAST:event_btnTambahActionPerformed
-
-    private void inpNamaSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNamaSiswaActionPerformed
+    private void inpNilaiUasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUasKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_inpNamaSiswaActionPerformed
+    }//GEN-LAST:event_inpNilaiUasKeyTyped
 
-    private void inpMatpelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpMatpelActionPerformed
+    private void inpNilaiUasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUasKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_inpMatpelActionPerformed
+    }//GEN-LAST:event_inpNilaiUasKeyPressed
 
-    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+    private void inpNilaiUasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiUasActionPerformed
         // TODO add your handling code here:
-        actionField(false, false, false, false, false, false);
-        actionButton(true, false, false, true);
-        clearField();
-    }//GEN-LAST:event_btnBatalActionPerformed
+    }//GEN-LAST:event_inpNilaiUasActionPerformed
 
     private void cmbTahunAjaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTahunAjaranActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTahunAjaranActionPerformed
+
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+        // TODO add your handling code here:
+        actionField(false, false, false, false, false, false,false,false,false);
+        actionButton(true, false, false, true);
+        clearField();
+    }//GEN-LAST:event_btnBatalActionPerformed
 
     private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
         // TODO add your handling code here:
@@ -345,6 +394,85 @@ public class FormNilai extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnKeluarActionPerformed
 
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        actionButton(false,true , true, false);
+        actionField(true, true, true, true, true, true,true,true,true);
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+
+        int flag;
+        NilaiEntity entity = new NilaiEntity();
+        flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menyimpan ?","Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if(flag == 0){
+
+            entity.setId_matpel(cmbMatpel.getSelectedItem().toString());
+            entity.setNis(cmbNamaSiswa.getSelectedItem().toString());
+            entity.setNilai_uts(Integer.parseInt(inpNilaiUts.getText()));
+            entity.setNilai_uas(Integer.parseInt(inpNilaiUas.getText()));
+            entity.setNilai_tugas(Integer.parseInt(inpNilaiTugas.getText()));
+            entity.setTahun_ajaran(cmbTahunAjaran.getSelectedItem().toString());
+            try {
+                loadInsertNilai(entity);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void inpNilaiUtsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUtsKeyTyped
+        if(!Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_inpNilaiUtsKeyTyped
+
+    private void inpNilaiUtsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUtsKeyPressed
+
+    }//GEN-LAST:event_inpNilaiUtsKeyPressed
+
+    private void inpNilaiUtsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiUtsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpNilaiUtsActionPerformed
+
+    private void cmbMatpelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMatpelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbMatpelActionPerformed
+
+    private void cmbNamaSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbNamaSiswaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbNamaSiswaActionPerformed
+
+    private void inpKelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpKelasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpKelasActionPerformed
+
+    private void inpKelasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpKelasKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpKelasKeyPressed
+
+    private void inpKelasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpKelasKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpKelasKeyTyped
+    
+    private void loadSiswa() throws Exception{
+        cmbNamaSiswa.removeAllItems();
+        List<Siswa> siswa = siswaService.getAllSiswa();
+        cmbNamaSiswa.addItem("--Pilih--");
+        for(Siswa result : siswa){
+            cmbNamaSiswa.addItem(result.getNis() + " - "+ result.getNama_siswa());
+        } 
+    }
+    
+    private void loadMatpel() throws Exception{
+        cmbMatpel.removeAllItems();
+        List<MataPelajaran> matpel = matpelService.getAllMatpel();
+        cmbMatpel.addItem("--Pilih--");
+        
+        for(MataPelajaran result : matpel){
+            cmbMatpel.addItem(result.getId_matpel() +" - "+result.getNama_matpel());
+        } 
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -388,37 +516,74 @@ public class FormNilai extends javax.swing.JFrame {
         });
     }
     
-    private void loadInsertNilai(int id_siswa, int id_matpel, int nilai, String tahun_ajaran) throws Exception {
-        nilaiService.insertNilai(id_siswa, id_matpel, nilai, tahun_ajaran);
+    private void loadInsertNilai(NilaiEntity data) throws Exception {
+        boolean result = false;
+        result = nilaiService.insertNilai(data);
+        if(result){
+            JOptionPane.showMessageDialog(null, "Data berhasil di simpan");
+        }else{
+            JOptionPane.showMessageDialog(null, "Data gagal di simpan");
+        }
+        
         clearField();
     }
     
-    private class ComboBoxListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(cmbNamaSiswa.getSelectedItem().equals("--Pilih--")){
-                inpNamaSiswa.setText("");
-            }else{
-                Siswa siswa=(Siswa) cmbNamaSiswa.getSelectedItem();
-                inpNamaSiswa.setText(siswa.getNama_siswa());
+    private void loadTable() throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
+        DefaultTableModel model = new DefaultTableModel();
+        tableNilaiSiswa.setModel(model);
+        model.addColumn("NIS");
+        model.addColumn("Nama Siswa");
+        model.addColumn("Kelas");
+        model.addColumn("Mata Pelajaran");
+        model.addColumn("Nilai UTS");
+        model.addColumn("Nilai UAS");
+        model.addColumn("Nilai Tugas");
+        model.addColumn("Tahun Ajaran");
+        try{
+            list = nilaiService.getAllNilai();
+            System.out.println(list);
+            Object[] obj = new Object[8];
+            for(int i = 0 ; i < list.size() ; i++){
+                obj[0] = list.get(i).get("nis").toString();
+                obj[1] = list.get(i).get("nama_siswa").toString();
+                obj[2] = list.get(i).get("kelas").toString();
+                obj[3] = list.get(i).get("nama_matpel").toString();
+                obj[4] = list.get(i).get("uts").toString();
+                obj[5] = list.get(i).get("uas").toString();
+                obj[6] = list.get(i).get("tugas").toString();
+                obj[7] = list.get(i).get("tahun_ajaran").toString();
+                model.addRow(obj);
             }
-            
-            if(cmbMatpel.getSelectedItem().equals("--Pilih--")){
-                inpMatpel.setText("");
-            }else{
-                MataPelajaran matpel=(MataPelajaran) cmbMatpel.getSelectedItem();
-                inpMatpel.setText(matpel.getNama_matpel());
-            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        
     }
+    
+//    private class ComboBoxListener implements ActionListener{
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            if(cmbNamaSiswa.getSelectedItem().equals("--Pilih--")){
+//                inpNamaSiswa.setText("");
+//            }else{
+//                Siswa siswa=(Siswa) cmbNamaSiswa.getSelectedItem();
+//                inpNamaSiswa.setText(siswa.getNama_siswa());
+//            }
+//            
+//            if(cmbMatpel.getSelectedItem().equals("--Pilih--")){
+//                inpMatpel.setText("");
+//            }else{
+//                MataPelajaran matpel=(MataPelajaran) cmbMatpel.getSelectedItem();
+//                inpMatpel.setText(matpel.getNama_matpel());
+//            }
+//        }
+//        
+//    }
     
     private void clearField() {
         cmbNamaSiswa.setSelectedItem("--Pilih--");
-        inpNamaSiswa.setText("");
         cmbMatpel.setSelectedItem("--Pilih--");
-        inpMatpel.setText("");
-        inpNilai.setText("");
+        inpNilaiUts.setText("");
         cmbTahunAjaran.setSelectedItem("--Pilih--");
     }
     
@@ -429,13 +594,15 @@ public class FormNilai extends javax.swing.JFrame {
         btnKeluar.setEnabled(keluar);
     }
     
-    private void actionField(boolean nis, boolean nama_siswa, boolean kode_matpel, boolean matpel, boolean nilai, boolean tahun_ajaran) {
+    private void actionField(boolean nis, boolean nama_siswa, boolean kode_matpel, boolean matpel, boolean nilai_uts, boolean tahun_ajaran, boolean nilai_uas,
+            boolean nilai_tugas, boolean kelas) {
         cmbNamaSiswa.setEnabled(nis);
-        inpNamaSiswa.setEnabled(nama_siswa);
         cmbMatpel.setEnabled(kode_matpel);
-        inpMatpel.setEnabled(matpel);
-        inpNilai.setEnabled(nilai);
+        inpNilaiUts.setEnabled(nilai_uts);
+        inpNilaiUas.setEnabled(nilai_uas);
+        inpNilaiTugas.setEnabled(nilai_tugas);
         cmbTahunAjaran.setEnabled(tahun_ajaran);
+        inpKelas.setEnabled(kelas);
     }
     
     private void tahunAjaran() throws Exception{
@@ -446,7 +613,7 @@ public class FormNilai extends javax.swing.JFrame {
         for(int i = 2010 ; i <= year; i++){
             for(int j = i ; j <= i; j++){
                 int newYear = j+1;
-                cmbTahunAjaran.addItem(i + " / " + newYear);
+                cmbTahunAjaran.addItem(i + "/" + newYear);
             }
         }
     }
@@ -458,14 +625,20 @@ public class FormNilai extends javax.swing.JFrame {
     private javax.swing.JComboBox cmbMatpel;
     private javax.swing.JComboBox cmbNamaSiswa;
     private javax.swing.JComboBox cmbTahunAjaran;
-    private javax.swing.JTextField inpMatpel;
-    private javax.swing.JTextField inpNamaSiswa;
-    private javax.swing.JTextField inpNilai;
+    private javax.swing.JTextField inpKelas;
+    private javax.swing.JTextField inpNilaiTugas;
+    private javax.swing.JTextField inpNilaiUas;
+    private javax.swing.JTextField inpNilaiUts;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tableNilaiSiswa;
     // End of variables declaration//GEN-END:variables
 }

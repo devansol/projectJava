@@ -30,12 +30,12 @@ public class MatpelDao {
     public List<MataPelajaran> getAllMatpel() throws Exception{
         List<MataPelajaran> list = new ArrayList<MataPelajaran>();
         try{
-            String query = "select a.id_matpel, a.nama_matpel from nilai_siswa.matpel a";
+            String query = "select a.kode_matpel, a.nama_matpel from nilai_siswa.matpel a";
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
             while(rs.next()){
                 MataPelajaran matpel = new MataPelajaran();
-                matpel.setId_matpel(rs.getString("id_matpel"));
+                matpel.setId_matpel(rs.getString("kode_matpel"));
                 matpel.setNama_matpel(rs.getString("nama_matpel"));
                 list.add(matpel);
             }

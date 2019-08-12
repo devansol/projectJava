@@ -14,6 +14,7 @@ public class Guru {
     private String nama_guru;
     private String email;
     private String password;
+    private int akses;
 
     /**
      * @return the nip
@@ -74,6 +75,20 @@ public class Guru {
     @Override
     public String toString(){
         return nip;
+    }
+
+    /**
+     * @return the akses
+     */
+    public int getAkses() {
+        return akses;
+    }
+
+    /**
+     * @param akses the akses to set
+     */
+    public void setAkses(int akses) {
+        this.akses = akses;
     }
     
 }
