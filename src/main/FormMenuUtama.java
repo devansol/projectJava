@@ -232,11 +232,17 @@ public class FormMenuUtama extends javax.swing.JFrame {
 
     private void btnSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiswaActionPerformed
         // TODO add your handling code here:
-        FormSiswa formSiswa = new FormSiswa();
-        formSiswa.setVisible(true);
-        formSiswa.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        formSiswa.setTitle("Form Input Siswa");
-        this.setVisible(false);
+        FormSiswa formSiswa;
+        try {
+            formSiswa = new FormSiswa();
+            formSiswa.setVisible(true);
+            formSiswa.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            formSiswa.setTitle("Form Input Siswa");
+            this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnSiswaActionPerformed
 
     /**

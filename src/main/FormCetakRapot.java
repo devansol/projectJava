@@ -37,8 +37,8 @@ public class FormCetakRapot extends javax.swing.JFrame {
         siswaService = new SiswaService();
         loadSiswa();
         tahunAjaran();
-        cmbNis.addActionListener(new FormCetakRapot.ComboBoxListener());
-        inpNamaSiswaReport.setEditable(false);
+//        cmbNis.addActionListener(new FormCetakRapot.ComboBoxListener());
+//        inpNamaSiswaReport.setEditable(false);
     }
 
     /**
@@ -55,7 +55,6 @@ public class FormCetakRapot extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         cmbNis = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
-        inpNamaSiswaReport = new javax.swing.JTextField();
         cmbTahunAjaran = new javax.swing.JComboBox();
         btnCetakRapot = new javax.swing.JButton();
         btnKeluar = new javax.swing.JButton();
@@ -72,12 +71,6 @@ public class FormCetakRapot extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Tahun Ajaran");
-
-        inpNamaSiswaReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inpNamaSiswaReportActionPerformed(evt);
-            }
-        });
 
         cmbTahunAjaran.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -111,14 +104,16 @@ public class FormCetakRapot extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnCetakRapot, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbNis, 0, 104, Short.MAX_VALUE)
-                            .addComponent(cmbTahunAjaran, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inpNamaSiswaReport, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(165, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnCetakRapot, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                                .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(cmbNis, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(22, 22, 22)))))
+                .addContainerGap(223, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,8 +123,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cmbNis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inpNamaSiswaReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbNis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -155,10 +149,6 @@ public class FormCetakRapot extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void inpNamaSiswaReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNamaSiswaReportActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inpNamaSiswaReportActionPerformed
-
     private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
         // TODO add your handling code here:
         FormMenuUtama formMenuUtama = new FormMenuUtama();
@@ -170,7 +160,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
 
     private void btnCetakRapotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakRapotActionPerformed
 
-        String nis = cmbNis.getSelectedItem().toString();
+        String nis = getCodeComboBox(cmbNis.getSelectedItem().toString());
         String tahun_ajaran = cmbTahunAjaran.getSelectedItem().toString();
         try {
             if(nis.equals("--Pilih--")){
@@ -234,18 +224,18 @@ public class FormCetakRapot extends javax.swing.JFrame {
         });
     }
     
-    private class ComboBoxListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(cmbNis.getSelectedItem().equals("--Pilih--")){
-                inpNamaSiswaReport.setText("");
-            }else{
-                Siswa siswa=(Siswa) cmbNis.getSelectedItem();
-                inpNamaSiswaReport.setText(siswa.getNama_siswa());
-            }
-        }
-        
-    }
+//    private class ComboBoxListener implements ActionListener{
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            if(cmbNis.getSelectedItem().equals("--Pilih--")){
+//                inpNamaSiswaReport.setText("");
+//            }else{
+//                Siswa siswa=(Siswa) cmbNis.getSelectedItem();
+//                inpNamaSiswaReport.setText(siswa.getNama_siswa());
+//            }
+//        }
+//        
+//    }
     
     private void loadSiswa() throws Exception{
         cmbNis.removeAllItems();
@@ -253,7 +243,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
         cmbNis.addItem("--Pilih--");
         
         for(Siswa result : siswa){
-            cmbNis.addItem(result);
+            cmbNis.addItem(result.getNis() + " - " + result.getNama_siswa());
         } 
     }
     
@@ -290,13 +280,19 @@ public class FormCetakRapot extends javax.swing.JFrame {
         }
         
     }
+    
+    private String getCodeComboBox(String param) {
+        String code = "";
+        String[] arr = param.split(" ");
+	code = arr[0];	
+	return code;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCetakRapot;
     private javax.swing.JButton btnKeluar;
     private javax.swing.JComboBox cmbNis;
     private javax.swing.JComboBox cmbTahunAjaran;
-    private javax.swing.JTextField inpNamaSiswaReport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

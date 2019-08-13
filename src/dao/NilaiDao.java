@@ -5,6 +5,8 @@
  */
 package dao;
 
+import entity.Guru;
+import entity.MataPelajaran;
 import entity.NilaiEntity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,7 +33,7 @@ public class NilaiDao {
     public boolean insertNilai(NilaiEntity data) throws Exception {
         boolean result = false;
         try{
-            String query = "insert into nilai_siswa.nilai (nis, id_matpel, uts, uas, tugas, tahun_ajaran) values (?,?,?,?,?,?)";
+            String query = "insert into nilai_siswa.nilai (nis, kode_matpel, uts, uas, tugas, tahun_ajaran) values (?,?,?,?,?,?)";
             ps = conn.prepareStatement(query);
             ps.setString(1, data.getNis());
             ps.setString(2, data.getId_matpel());   
@@ -80,5 +81,24 @@ public class NilaiDao {
             rs.close();
         }
         return list;
+    }
+    
+    public String kelasSiswa(String nis) throws Exception{
+        String kelas = "";
+        try{
+            String query = "select * from nilai_siswa.siswa aa where aa.nis = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, nis);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                kelas = rs.getString("kelas");
+            }
+        }catch(Exception e){
+           throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+            rs.close();
+        }
+        return kelas;
     }
 }

@@ -59,4 +59,6 @@ public class SiswaService extends KoneksiDb {
         }
         return list;
     }
+    
+    
 }

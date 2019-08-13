@@ -31,4 +31,18 @@ public class MatpelService extends KoneksiDb {
         }
         return list;
     }
+    
+    public List<MataPelajaran> getMatpelByNipGuru(String nip) throws Exception{
+        List<MataPelajaran> list = new ArrayList<>();
+        try{
+            conn = getConnection();
+            matpel.setConnection(conn);
+            list = matpel.getMatpelByNipGuru(nip);
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return list;
+    }
 }

@@ -6,6 +6,7 @@
 package service;
 
 import dao.NilaiDao;
+import dao.SiswaDao;
 import entity.NilaiEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ import javax.swing.JOptionPane;
  */
 public class NilaiService extends KoneksiDb {
     NilaiDao dao = new NilaiDao();
+    
+    SiswaDao siswaDao = new SiswaDao();
     
      public boolean insertNilai(NilaiEntity data) throws Exception {
          boolean result = false;
@@ -52,5 +55,20 @@ public class NilaiService extends KoneksiDb {
          }
          return list;
      }
+     
+     public String kelasSiswa(String nis) throws Exception{
+        String kelas = "";
+        try{
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            dao.setConnection(conn);
+            kelas = dao.kelasSiswa(nis);
+        }catch(Exception e){
+           throw new Exception(e.getMessage());
+        }finally{
+           conn.close();
+        }
+        return kelas;
+    }
     
 }

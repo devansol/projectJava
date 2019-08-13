@@ -47,4 +47,26 @@ public class MatpelDao {
         }
         return list;
     }
+    
+    public List<MataPelajaran> getMatpelByNipGuru(String nip) throws Exception{
+        List<MataPelajaran> list = new ArrayList<>();
+        try{
+            String query = "select kode_matpel, nama_matpel from nilai_siswa.matpel aa where aa.nip = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, nip);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                MataPelajaran entity = new MataPelajaran();
+                entity.setId_matpel(rs.getString("kode_matpel"));
+                entity.setNama_matpel(rs.getString("nama_matpel"));
+                list.add(entity);
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+            rs.close();
+        }
+        return list;       
+    }
 }

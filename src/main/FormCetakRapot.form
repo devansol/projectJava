@@ -52,18 +52,22 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnCetakRapot" min="-2" pref="86" max="-2" attributes="0"/>
-                              <Component id="cmbNis" pref="104" max="32767" attributes="0"/>
-                              <Component id="cmbTahunAjaran" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="inpNamaSiswaReport" min="-2" pref="144" max="-2" attributes="0"/>
-                              <Component id="btnKeluar" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="btnCetakRapot" min="-2" pref="86" max="-2" attributes="0"/>
+                                      <Component id="cmbTahunAjaran" min="-2" pref="109" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace pref="13" max="32767" attributes="0"/>
+                                  <Component id="btnKeluar" min="-2" pref="86" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="cmbNis" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="165" max="32767" attributes="0"/>
+                  <EmptySpace pref="223" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -76,7 +80,6 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cmbNis" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="inpNamaSiswaReport" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -129,11 +132,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Tahun Ajaran"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="inpNamaSiswaReport">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inpNamaSiswaReportActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="cmbTahunAjaran">
           <Properties>

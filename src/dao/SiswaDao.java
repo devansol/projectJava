@@ -9,10 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import entity.Siswa;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -87,13 +85,16 @@ public class SiswaDao {
     public List<Siswa> getAllSiswa() throws Exception{
         List<Siswa> list = new ArrayList<Siswa>();
         try{
-            String query = "select nis, nama_siswa, kelas from nilai_siswa.siswa";
+            String query = "select * from nilai_siswa.siswa";
             ps = conn.prepareStatement(query);
             rs = ps.executeQuery();
             while(rs.next()){
                 Siswa siswa = new Siswa();
                 siswa.setNis(rs.getString("nis"));
                 siswa.setNama_siswa(rs.getString("nama_siswa"));
+                siswa.setKelamin(rs.getString("jenis_kelamin"));
+                siswa.setKelas(rs.getString("kelas"));
+                siswa.setAlamat(rs.getString("alamat_siswa"));
                 list.add(siswa);
             }
         }catch(Exception e){
@@ -104,4 +105,6 @@ public class SiswaDao {
         }
         return list;
     }
+    
+    
 }
