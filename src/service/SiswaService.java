@@ -38,7 +38,13 @@ public class SiswaService extends KoneksiDb {
             conn.setAutoCommit(false);
             siswa.setConnection(conn);
             result = siswa.insertSiswa(data);
+            if(result){
+                conn.commit();
+            }else{
+                conn.rollback();
+            }
         }catch(Exception e){
+            conn.rollback();
             throw new Exception(e.getMessage());
         }finally{
             conn.close();
@@ -58,6 +64,59 @@ public class SiswaService extends KoneksiDb {
             conn.close();
         }
         return list;
+    }
+    
+    public List<Siswa> getSiswaByParameter(String param) throws Exception{
+        List<Siswa> list = new ArrayList<Siswa>();
+        try{
+            conn = getConnection();
+            siswa.setConnection(conn);
+            list = siswa.getSiswaByParameter(param);
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return list;
+    }
+    
+    public int valdiasiSiswa(String param) throws Exception{
+        int count = 0;
+        try{
+            List<Siswa> list = new ArrayList<Siswa>();
+            conn = getConnection();
+            siswa.setConnection(conn);
+            list = siswa.getSiswaByParameter(param);
+            if(list.size() > 0){
+                count = 1;
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return count;
+    }
+    
+    public boolean updateSiswa(Siswa data) throws Exception{
+        boolean result = false;
+        try{
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            siswa.setConnection(conn);
+            result = siswa.updateSiswa(data);
+            if(result){
+                conn.commit();
+            }else{
+                conn.rollback();
+            }
+        }catch(Exception e){
+            conn.rollback();
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return result;
     }
     
     

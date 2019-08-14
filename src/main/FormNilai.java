@@ -9,6 +9,7 @@ import entity.MataPelajaran;
 import entity.NilaiEntity;
 import entity.Session;
 import entity.Siswa;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -243,11 +244,11 @@ public class FormNilai extends javax.swing.JFrame {
                 .addGap(83, 83, 83)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -270,21 +271,19 @@ public class FormNilai extends javax.swing.JFrame {
                                             .addComponent(inpNilaiUts, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(inpNilaiUas, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(inpNilaiTugas, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 98, Short.MAX_VALUE)))
-                        .addContainerGap(109, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(172, 172, 172)
-                        .addComponent(btnTambah)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnKeluar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSimpan)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBatal)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnTambah)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnKeluar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSimpan)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBatal)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(183, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(65, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(83, 83, 83))
         );
@@ -348,7 +347,8 @@ public class FormNilai extends javax.swing.JFrame {
 
     private void inpNilaiTugasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiTugasKeyTyped
         // TODO add your handling code here:
-        if(!Character.isDigit(evt.getKeyChar())){
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c) || c==KeyEvent.VK_BACK_SPACE  || c == KeyEvent.VK_DELETE){
             evt.consume();
         }
     }//GEN-LAST:event_inpNilaiTugasKeyTyped
@@ -366,7 +366,8 @@ public class FormNilai extends javax.swing.JFrame {
 
     private void inpNilaiUasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUasKeyTyped
         // TODO add your handling code here:
-        if(!Character.isDigit(evt.getKeyChar())){
+       char c = evt.getKeyChar();
+        if(!Character.isDigit(c) || c==KeyEvent.VK_BACK_SPACE  || c == KeyEvent.VK_DELETE){
             evt.consume();
         }
     }//GEN-LAST:event_inpNilaiUasKeyTyped
@@ -435,7 +436,8 @@ public class FormNilai extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void inpNilaiUtsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUtsKeyTyped
-        if(!Character.isDigit(evt.getKeyChar())){
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c) || c==KeyEvent.VK_BACK_SPACE  || c == KeyEvent.VK_DELETE){
             evt.consume();
         }
     }//GEN-LAST:event_inpNilaiUtsKeyTyped

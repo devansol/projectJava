@@ -7,12 +7,15 @@ package main;
 
 import javax.swing.JFrame;
 import entity.Siswa;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import service.*;
 /**
  *
@@ -30,7 +33,7 @@ public class FormSiswa extends javax.swing.JFrame {
         actionButton(true, false, false, true);
         actionField(false, false, false, false, false);
         loadTableAllSiswa();
-        countKelas();
+//        countKelas();
     }
 
     /**
@@ -67,6 +70,10 @@ public class FormSiswa extends javax.swing.JFrame {
                 return false; //Disallow the editing of any cell
             }
         };
+        inpCari = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        btncari = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,7 +101,7 @@ public class FormSiswa extends javax.swing.JFrame {
         txtAlamat.setRows(5);
         jScrollPane1.setViewportView(txtAlamat);
 
-        cmbKelas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Pilih--", "10", "11", "12" }));
+        cmbKelas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Pilih--", "1", "2", "3", "4", "5", "6" }));
 
         btnTambah.setText("Tambah");
         btnTambah.addActionListener(new java.awt.event.ActionListener() {
@@ -135,7 +142,29 @@ public class FormSiswa extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelSiswa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelSiswaMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabelSiswa);
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Cari Siswa");
+
+        btncari.setText("Cari");
+        btncari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncariActionPerformed(evt);
+            }
+        });
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -143,29 +172,26 @@ public class FormSiswa extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(209, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(599, 599, 599))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(inpNis, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addComponent(jLabel1)
+                .addGap(599, 599, 599))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(80, 80, 80)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnTambah)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBatal)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSimpan)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnKeluar))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(94, 94, 94)
-                        .addComponent(cmbKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnTambah)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBatal)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSimpan)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnKeluar))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(94, 94, 94)
+                                .addComponent(cmbKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -176,8 +202,19 @@ public class FormSiswa extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(inpNamaSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbKelamin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmbKelamin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inpNis, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btncari)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRefresh))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,12 +222,16 @@ public class FormSiswa extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(inpNis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btncari)
+                    .addComponent(btnRefresh))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(inpNis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(cmbKelamin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -201,13 +242,13 @@ public class FormSiswa extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(28, 28, 28)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTambah)
                     .addComponent(btnBatal)
@@ -276,18 +317,23 @@ public class FormSiswa extends javax.swing.JFrame {
                 txtAlamat.requestFocus();
                 JOptionPane.showMessageDialog(null, "Alamat tidak boleh kosong !");
             }else{
-                if(result){
+                int count = validasiSiswa(inpNis.getText());
+                if(count > 0){
+                    result = siswa.updateSiswa(data);
+                }else{
                     result = siswa.insertSiswa(data);
+                }
+          
+                if(result){
                     JOptionPane.showMessageDialog(null, "Data berhasil di simpan");
                     actionButton(true, false, false, true);
                     actionField(false, false, false, false, false);
                     clearField();
+                    loadTableAllSiswa();
                 }else{
                     JOptionPane.showMessageDialog(null, "Data gagal disimpan");
                 }
-               
             }
-            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -301,6 +347,40 @@ public class FormSiswa extends javax.swing.JFrame {
         menuUtama.setTitle("Menu Utama");
         this.setVisible(false);
     }//GEN-LAST:event_btnKeluarActionPerformed
+
+    private void btncariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncariActionPerformed
+        try {
+            // TODO add your handling code here:
+            String param = inpCari.getText();
+            loadTableCariSiswa(param);
+        } catch (Exception ex) {
+            Logger.getLogger(FormSiswa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btncariActionPerformed
+
+    private void tabelSiswaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelSiswaMouseClicked
+        // TODO add your handling code here:
+        int i = tabelSiswa.getSelectedRow();
+        TableModel model = tabelSiswa.getModel();
+        inpNis.setText(model.getValueAt(i, 0).toString());
+        inpNamaSiswa.setText(model.getValueAt(i, 1).toString());
+        cmbKelamin.setSelectedItem(model.getValueAt(i, 2).toString());
+        
+        txtAlamat.setText(model.getValueAt(i, 3).toString());
+        cmbKelas.setSelectedItem(model.getValueAt(i, 4).toString());
+        actionButton(false, true, true, false);
+        actionField(true, true, true, true, true);
+    }//GEN-LAST:event_tabelSiswaMouseClicked
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        try {
+            // TODO add your handling code here:
+            loadTableAllSiswa();
+            inpCari.setText("");
+        } catch (Exception ex) {
+            Logger.getLogger(FormSiswa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -398,6 +478,42 @@ public class FormSiswa extends javax.swing.JFrame {
         }
     }
     
+    private void loadTableCariSiswa(String param)throws Exception {
+        List<Siswa> list = new ArrayList<Siswa>();
+        DefaultTableModel model = new DefaultTableModel();
+        tabelSiswa.setModel(model);
+        model.getDataVector().removeAllElements();
+        model.addColumn("NIS");
+        model.addColumn("Nama Siswa");
+        model.addColumn("Jenis Kelamin");
+        model.addColumn("Alamat");
+        model.addColumn("Kelas");
+        try{
+            list = siswa.getSiswaByParameter(param);
+            Object[] obj = new Object[5];
+            for(int i = 0 ; i < list.size() ; i++){
+                obj[0] = list.get(i).getNis();
+                obj[1] = list.get(i).getNama_siswa();
+                obj[2] = list.get(i).getKelamin();
+                obj[3] = list.get(i).getAlamat();
+                obj[4] = list.get(i).getKelas();
+                model.addRow(obj);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
+    public int validasiSiswa(String nis) throws Exception{
+        int count = 0;
+        try{
+            count = siswa.valdiasiSiswa(nis);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return count;
+    }
+    
     void countKelas() {
         cmbKelas.removeAllItems();
          cmbKelas.addItem("--Pilih--");
@@ -409,10 +525,13 @@ public class FormSiswa extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnKeluar;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
+    private javax.swing.JButton btncari;
     private javax.swing.JComboBox cmbKelamin;
     private javax.swing.JComboBox cmbKelas;
+    private javax.swing.JTextField inpCari;
     private javax.swing.JTextField inpNamaSiswa;
     private javax.swing.JTextField inpNis;
     private javax.swing.JLabel jLabel1;
@@ -421,6 +540,7 @@ public class FormSiswa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

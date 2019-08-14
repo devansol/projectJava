@@ -130,6 +130,8 @@ public class GuruDao {
                 map.put("nip", rs.getString("nip"));
                 map.put("nama_guru", rs.getString("nama_guru"));
                 map.put("email", rs.getString("email"));
+                map.put("akses", rs.getString("akses"));
+                map.put("password", rs.getString("password"));
                 list.add(map);
             }
         }catch(Exception e){
@@ -139,5 +141,51 @@ public class GuruDao {
             rs.close();
         }
         return list; 
+    }
+    
+    public List<Map<String,Object>> getGuruByParameter(String param) throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        String params = '%' + param + '%';
+        try{
+            ps = conn.prepareStatement("select * from nilai_siswa.guru where nip like ? or nama_guru like ? ");
+            ps.setString(1, params);
+            ps.setString(2, params);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Map<String,Object> map = new HashMap<>();
+                map.put("nip", rs.getString("nip"));
+                map.put("nama_guru", rs.getString("nama_guru"));
+                map.put("email", rs.getString("email"));
+                map.put("akses", rs.getString("akses"));
+                list.add(map);
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+            rs.close();
+        }
+        return list; 
+    }
+    
+    public boolean updateGuru(Guru data) throws Exception{
+        boolean result = false;
+        try{
+            String query = "update guru set nama_guru = ? , email = ? , password = ? , akses = ? where nip = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, data.getNama_guru());
+            ps.setString(2, data.getEmail());
+            ps.setString(3, data.getPassword());
+            ps.setInt(4, data.getAkses());
+            ps.setString(5, data.getNip());
+            if(ps.executeUpdate() > 0){
+                result = true;
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+        }
+        return result;
     }
 }

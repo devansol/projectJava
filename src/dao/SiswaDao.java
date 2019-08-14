@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import entity.Siswa;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -71,7 +72,7 @@ public class SiswaDao {
             ps.setString(4, data.getAlamat());
             ps.setString(5, data.getKelas());
             
-            if(ps.executeUpdate() == 1){
+            if(ps.executeUpdate() > 0){
                 result = true;
             }
         }catch(Exception e){
@@ -104,6 +105,56 @@ public class SiswaDao {
             rs.close();
         }
         return list;
+    }
+    
+    public List<Siswa> getSiswaByParameter(String param) throws Exception{
+        List<Siswa> list = new ArrayList<>();
+        String params = '%' + param + '%';
+        try{
+            String query = "select * from nilai_siswa.siswa where (nis like ?) or (nama_siswa like ?)";
+            ps = conn.prepareStatement(query);
+            ps.setString(1,params);
+            ps.setString(2, params);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Siswa siswa = new Siswa();
+                siswa.setNis(rs.getString("nis"));
+                siswa.setNama_siswa(rs.getString("nama_siswa"));
+                siswa.setKelamin(rs.getString("jenis_kelamin"));
+                siswa.setKelas(rs.getString("kelas"));
+                siswa.setAlamat(rs.getString("alamat_siswa"));
+                list.add(siswa);
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+            rs.close();
+        }
+        return list;
+    }
+    
+    public boolean updateSiswa(Siswa data) throws Exception{
+        boolean update = false;
+        try{
+            String query = "update siswa set jenis_kelamin = ? , nama_siswa = ?, alamat_siswa = ? , kelas = ? where "
+                    + "nis = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, data.getKelamin());
+            ps.setString(2, data.getNama_siswa());
+            ps.setString(3, data.getAlamat());
+            ps.setString(4, data.getKelas());
+            ps.setString(5, data.getNis());
+            if(ps.executeUpdate() > 0){
+                update = true;
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+            rs.close();
+        }
+        return update;
     }
     
     

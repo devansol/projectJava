@@ -45,6 +45,8 @@ public class GuruService extends KoneksiDb {
             result = guru.insertGuru(data);
             if(result) {
                 conn.commit();
+            }else{
+                conn.rollback();
             }
         } catch (Exception e) {
             conn.rollback();
@@ -69,7 +71,7 @@ public class GuruService extends KoneksiDb {
         return map;
     }
     
-     public List<Map<String,Object>> getAllGuru() throws Exception{
+    public List<Map<String,Object>> getAllGuru() throws Exception{
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         try{
            conn = getConnection();
@@ -81,5 +83,57 @@ public class GuruService extends KoneksiDb {
             conn.close();
         }
         return list; 
+    }
+    
+    public List<Map<String,Object>> getGuruByParameter(String param) throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        try{
+           conn = getConnection();
+           guru.setConnection(conn);
+           list = guru.getGuruByParameter(param);
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return list; 
+    }
+    
+    public int validasiGuru(String nip) throws Exception {
+        int count = 0;
+        try{
+            List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+            conn = getConnection();
+            guru.setConnection(conn);
+            list = guru.getGuruByParameter(nip);
+            if(list.size() > 0){
+                count = 1;
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return count;
+    }
+    
+    public boolean updateGuru(Guru data) throws Exception{
+        boolean result = false;
+        try{
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            guru.setConnection(conn);
+            result = guru.updateGuru(data);
+            if(result) {
+                conn.commit();
+            }else{
+                conn.rollback();
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+           conn.close();
+        }
+        return result;
     }
 }
