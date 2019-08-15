@@ -15,6 +15,7 @@ public class Siswa {
     private String alamat;
     private String kelas;
     private String kelamin;
+    private String tahun_ajaran;
 
     /**
      * @return the id_siswa
@@ -93,6 +94,20 @@ public class Siswa {
      */
     public void setKelamin(String kelamin) {
         this.kelamin = kelamin;
+    }
+
+    /**
+     * @return the tahun_ajaran
+     */
+    public String getTahun_ajaran() {
+        return tahun_ajaran;
+    }
+
+    /**
+     * @param tahun_ajaran the tahun_ajaran to set
+     */
+    public void setTahun_ajaran(String tahun_ajaran) {
+        this.tahun_ajaran = tahun_ajaran;
     }
     
     

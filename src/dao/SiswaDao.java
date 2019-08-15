@@ -5,6 +5,7 @@
  */
 package dao;
 
+import entity.MataPelajaran;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -64,14 +65,14 @@ public class SiswaDao {
     public boolean insertSiswa(Siswa data) throws Exception{
         boolean result = false;
         try{
-            String query = "insert into nilai_siswa.siswa(nis,jenis_kelamin,nama_siswa,alamat_siswa,kelas) values (?,?,?,?,?)";
+            String query = "insert into nilai_siswa.siswa(nis,jenis_kelamin,nama_siswa,alamat_siswa,kelas, tahun_ajaran) values (?,?,?,?,?,?)";
             ps = conn.prepareStatement(query);
             ps.setString(1, data.getNis());
             ps.setString(2, data.getKelamin());
             ps.setString(3, data.getNama_siswa());
             ps.setString(4, data.getAlamat());
             ps.setString(5, data.getKelas());
-            
+            ps.setString(6, data.getTahun_ajaran());
             if(ps.executeUpdate() > 0){
                 result = true;
             }
@@ -96,6 +97,7 @@ public class SiswaDao {
                 siswa.setKelamin(rs.getString("jenis_kelamin"));
                 siswa.setKelas(rs.getString("kelas"));
                 siswa.setAlamat(rs.getString("alamat_siswa"));
+                siswa.setTahun_ajaran(rs.getString("tahun_ajaran"));
                 list.add(siswa);
             }
         }catch(Exception e){
@@ -123,6 +125,7 @@ public class SiswaDao {
                 siswa.setKelamin(rs.getString("jenis_kelamin"));
                 siswa.setKelas(rs.getString("kelas"));
                 siswa.setAlamat(rs.getString("alamat_siswa"));
+                siswa.setTahun_ajaran(rs.getString("tahun_ajaran"));
                 list.add(siswa);
             }
         }catch(Exception e){
@@ -138,13 +141,14 @@ public class SiswaDao {
         boolean update = false;
         try{
             String query = "update siswa set jenis_kelamin = ? , nama_siswa = ?, alamat_siswa = ? , kelas = ? where "
-                    + "nis = ?";
+                    + "nis = ? and tahun_ajaran = ? ";
             ps = conn.prepareStatement(query);
             ps.setString(1, data.getKelamin());
             ps.setString(2, data.getNama_siswa());
             ps.setString(3, data.getAlamat());
             ps.setString(4, data.getKelas());
             ps.setString(5, data.getNis());
+            ps.setString(6, data.getTahun_ajaran());
             if(ps.executeUpdate() > 0){
                 update = true;
             }
@@ -157,5 +161,26 @@ public class SiswaDao {
         return update;
     }
     
+    public boolean insertNilaiSiswaFirst(Siswa siswa, String kode_matpel) throws Exception{
+        boolean insert = false;
+        try{
+            ps = conn.prepareStatement("insert into nilai "
+                    + "(nis, kode_matpel, uts, uas, tugas, tahun_ajaran) "
+                    + "values (?,?,?,?,?,?)");
+            ps.setString(1, siswa.getNis());
+            ps.setString(2, kode_matpel);
+            ps.setInt(3, 0);
+            ps.setInt(4, 0);
+            ps.setInt(5, 0);
+            ps.setString(6, siswa.getTahun_ajaran());
+            ps.executeUpdate();
+            insert = true;
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+        }
+        return insert;
+    }
     
 }

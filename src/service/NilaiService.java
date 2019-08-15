@@ -9,6 +9,7 @@ import dao.NilaiDao;
 import dao.SiswaDao;
 import entity.NilaiEntity;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -70,5 +71,53 @@ public class NilaiService extends KoneksiDb {
         }
         return kelas;
     }
+     
+     public List<Map<String,Object>> getTableNilaiByNis(String param) throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        try{
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            dao.setConnection(conn);
+            list = dao.getTableNilaiByNis(param);
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+           conn.close();
+        }
+        return list;
+    }
+     
+     public boolean updateNilai(NilaiEntity data) throws Exception {
+         boolean result = false;
+         try{
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            dao.setConnection(conn);
+            result = dao.updateNilai(data);
+            if(result){
+                conn.commit();
+            }
+         }catch(Exception e){
+            conn.rollback();
+            throw new Exception(e.getMessage());
+         }finally{
+            conn.close();
+         }
+         return result;
+     }
+     
+     public int validasiNilai(NilaiEntity data) throws Exception {
+         int  count = 0;
+         try{
+             conn = getConnection();
+             dao.setConnection(conn);
+             count = dao.validasiNilai(data);
+         }catch(Exception e){
+             throw new Exception(e.getMessage());
+         }finally{
+             conn.close();
+         }
+         return count;
+     }
     
 }

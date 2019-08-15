@@ -10,6 +10,7 @@ import entity.Siswa;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,8 +32,9 @@ public class FormSiswa extends javax.swing.JFrame {
         siswa = new SiswaService();
         inpNis.setEditable(false);
         actionButton(true, false, false, true);
-        actionField(false, false, false, false, false);
+        actionField(false, false, false, false, false,false);
         loadTableAllSiswa();
+        tahunAjaran();
 //        countKelas();
     }
 
@@ -74,6 +76,8 @@ public class FormSiswa extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         btncari = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        cmbTahunAjaran = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,6 +170,9 @@ public class FormSiswa extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("Tahun Ajaran");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -178,7 +185,7 @@ public class FormSiswa extends javax.swing.JFrame {
                 .addGap(80, 80, 80)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnTambah)
                                 .addGap(18, 18, 18)
@@ -188,10 +195,14 @@ public class FormSiswa extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnKeluar))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(94, 94, 94)
-                                .addComponent(cmbKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel8))
+                                .addGap(42, 42, 42)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cmbKelas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbTahunAjaran, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(539, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -248,13 +259,17 @@ public class FormSiswa extends javax.swing.JFrame {
                             .addComponent(cmbKelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTambah)
                     .addComponent(btnBatal)
                     .addComponent(btnSimpan)
                     .addComponent(btnKeluar))
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -280,7 +295,7 @@ public class FormSiswa extends javax.swing.JFrame {
         try{
             loadNisSiswa();
             actionButton(false, true, true, false);
-            actionField(true, true, true, true, true);
+            actionField(true, true, true, true, true,true);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
@@ -290,7 +305,7 @@ public class FormSiswa extends javax.swing.JFrame {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         // TODO add your handling code here:
         actionButton(true, false, false, true);
-        actionField(false, false, false, false, false);
+        actionField(false, false, false, false, false,false);
         clearField();
     }//GEN-LAST:event_btnBatalActionPerformed
 
@@ -304,6 +319,7 @@ public class FormSiswa extends javax.swing.JFrame {
             data.setKelas(cmbKelas.getSelectedItem().toString());
             data.setAlamat(txtAlamat.getText());
             data.setNama_siswa(inpNamaSiswa.getText());
+            data.setTahun_ajaran(cmbTahunAjaran.getSelectedItem().toString());
             if(data.getNama_siswa().equals("")){
                 inpNamaSiswa.requestFocus();
                 JOptionPane.showMessageDialog(null,"Nama siswa tidak boleh kosong !");
@@ -327,7 +343,7 @@ public class FormSiswa extends javax.swing.JFrame {
                 if(result){
                     JOptionPane.showMessageDialog(null, "Data berhasil di simpan");
                     actionButton(true, false, false, true);
-                    actionField(false, false, false, false, false);
+                    actionField(false, false, false, false, false,false);
                     clearField();
                     loadTableAllSiswa();
                 }else{
@@ -369,7 +385,7 @@ public class FormSiswa extends javax.swing.JFrame {
         txtAlamat.setText(model.getValueAt(i, 3).toString());
         cmbKelas.setSelectedItem(model.getValueAt(i, 4).toString());
         actionButton(false, true, true, false);
-        actionField(true, true, true, true, true);
+        actionField(true, true, true, true, true,true);
     }//GEN-LAST:event_tabelSiswaMouseClicked
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
@@ -435,6 +451,7 @@ public class FormSiswa extends javax.swing.JFrame {
         txtAlamat.setText("");
         cmbKelamin.setSelectedItem("--Pilih--");
         cmbKelas.setSelectedItem("--Pilih--");
+        cmbTahunAjaran.setSelectedItem("--Pilih--");
     }
     
     private void actionButton(boolean tambah, boolean batal, boolean simpan, boolean keluar) {
@@ -444,12 +461,13 @@ public class FormSiswa extends javax.swing.JFrame {
         btnKeluar.setEnabled(keluar);
     }
     
-    private void actionField(boolean nis, boolean nama_siswa, boolean alamat, boolean kelas, boolean kelamin) {
+    private void actionField(boolean nis, boolean nama_siswa, boolean alamat, boolean kelas, boolean kelamin, boolean tahun_ajaran) {
         inpNis.setEnabled(nis);
         inpNamaSiswa.setEnabled(nama_siswa);
         txtAlamat.setEnabled(alamat);
         cmbKelas.setEnabled(kelas);
         cmbKelamin.setEnabled(kelamin);
+        cmbTahunAjaran.setEnabled(tahun_ajaran);
     }
     
     private void loadTableAllSiswa() throws Exception {
@@ -462,15 +480,17 @@ public class FormSiswa extends javax.swing.JFrame {
         model.addColumn("Jenis Kelamin");
         model.addColumn("Alamat");
         model.addColumn("Kelas");
+        model.addColumn("Tahun Ajaran");
         try{
             list = siswa.getAllSiswa();
-            Object[] obj = new Object[5];
+            Object[] obj = new Object[6];
             for(int i = 0 ; i < list.size() ; i++){
                 obj[0] = list.get(i).getNis();
                 obj[1] = list.get(i).getNama_siswa();
                 obj[2] = list.get(i).getKelamin();
                 obj[3] = list.get(i).getAlamat();
                 obj[4] = list.get(i).getKelas();
+                obj[5] = list.get(i).getTahun_ajaran();
                 model.addRow(obj);
             }
         }catch(Exception e){
@@ -488,15 +508,17 @@ public class FormSiswa extends javax.swing.JFrame {
         model.addColumn("Jenis Kelamin");
         model.addColumn("Alamat");
         model.addColumn("Kelas");
+        model.addColumn("Tahun Ajaran");
         try{
             list = siswa.getSiswaByParameter(param);
-            Object[] obj = new Object[5];
+            Object[] obj = new Object[6];
             for(int i = 0 ; i < list.size() ; i++){
                 obj[0] = list.get(i).getNis();
                 obj[1] = list.get(i).getNama_siswa();
                 obj[2] = list.get(i).getKelamin();
                 obj[3] = list.get(i).getAlamat();
                 obj[4] = list.get(i).getKelas();
+                obj[5] = list.get(i).getTahun_ajaran();
                 model.addRow(obj);
             }
         }catch(Exception e){
@@ -521,6 +543,19 @@ public class FormSiswa extends javax.swing.JFrame {
             cmbKelas.addItem(i);
         }
     }
+    
+    private void tahunAjaran() throws Exception{
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int years = year + 1;
+        cmbTahunAjaran.removeAllItems();
+        cmbTahunAjaran.addItem("--Pilih--");
+        for(int i = year ; i >= 2010; i--){
+            for(int j = i ; j >= i; j--){
+                int newYear = j+1;
+                cmbTahunAjaran.addItem(i + "/" + newYear);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
@@ -531,6 +566,7 @@ public class FormSiswa extends javax.swing.JFrame {
     private javax.swing.JButton btncari;
     private javax.swing.JComboBox cmbKelamin;
     private javax.swing.JComboBox cmbKelas;
+    private javax.swing.JComboBox cmbTahunAjaran;
     private javax.swing.JTextField inpCari;
     private javax.swing.JTextField inpNamaSiswa;
     private javax.swing.JTextField inpNis;
@@ -541,6 +577,7 @@ public class FormSiswa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package service;
+import dao.MatpelDao;
 import dao.SiswaDao;
+import entity.MataPelajaran;
 import entity.Siswa;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,9 @@ import java.util.List;
  * @author Daus
  */
 public class SiswaService extends KoneksiDb {
-    SiswaDao siswa  = new SiswaDao();;
+    SiswaDao siswa  = new SiswaDao();
+    
+    MatpelDao matpel = new MatpelDao();
 
     public String nisSiswa() throws Exception {
         String nis = "";
@@ -33,11 +37,19 @@ public class SiswaService extends KoneksiDb {
     
     public boolean insertSiswa(Siswa data) throws Exception{
         boolean result = false;
+        List<MataPelajaran> list = new ArrayList<>();
         try{
             conn = getConnection();
             conn.setAutoCommit(false);
             siswa.setConnection(conn);
+            matpel.setConnection(conn);
             result = siswa.insertSiswa(data);
+            list = matpel.getAllMatpel();
+            
+            for(int i = 0 ; i < list.size(); i++){
+                result = siswa.insertNilaiSiswaFirst(data, list.get(i).getId_matpel());
+            }
+            
             if(result){
                 conn.commit();
             }else{

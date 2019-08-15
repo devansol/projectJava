@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import service.SiswaService;
 import service.GuruService;
 import service.MatpelService;
@@ -46,7 +47,6 @@ public class FormNilai extends javax.swing.JFrame {
 //        loadMatpel();
         setMataPelajaran();
         tahunAjaran();
-        loadTable();
 //        cmbMatpel.addActionListener(new ComboBoxListener());
 //        cmbNamaSiswa.addActionListener(new ComboBoxListener());
         actionButton(true, false, false, true);
@@ -90,6 +90,10 @@ public class FormNilai extends javax.swing.JFrame {
         };
         jLabel8 = new javax.swing.JLabel();
         inpKelas = new javax.swing.JTextField();
+        btnCari = new javax.swing.JButton();
+        inpCari = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        btnRefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -207,15 +211,20 @@ public class FormNilai extends javax.swing.JFrame {
 
         tableNilaiSiswa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "NIS", "Nama Siswa", "Kelas", "Mata Pelajaran", "Nilai UTS", "Nilai Uas", "Nilai Tugas", "Tahun Ajaran"
+                "NIS", "Nama Siswa", "Kelas", "Kode Mata Pelajaran", "Mata Pelajaran", "Nilai UTS", "Nilai Uas", "Nilai Tugas", "Tahun Ajaran"
             }
         ));
+        tableNilaiSiswa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableNilaiSiswaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableNilaiSiswa);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -236,19 +245,51 @@ public class FormNilai extends javax.swing.JFrame {
             }
         });
 
+        btnCari.setText("Cari");
+        btnCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariActionPerformed(evt);
+            }
+        });
+
+        inpCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inpCariActionPerformed(evt);
+            }
+        });
+        inpCari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                inpCariKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                inpCariKeyTyped(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel9.setText("Cari Siswa");
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(261, 261, 261))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(83, 83, 83)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -279,20 +320,27 @@ public class FormNilai extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSimpan)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnBatal)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(183, Short.MAX_VALUE))
+                                .addComponent(btnBatal))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(438, 438, 438)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(btnCari)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRefresh)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
+                .addGap(0, 63, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
+                .addGap(53, 53, 53)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(cmbNamaSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -322,9 +370,15 @@ public class FormNilai extends javax.swing.JFrame {
                     .addComponent(btnKeluar)
                     .addComponent(btnSimpan)
                     .addComponent(btnBatal))
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCari)
+                    .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(btnRefresh))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(247, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -409,7 +463,7 @@ public class FormNilai extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-
+        
         int flag;
         NilaiEntity entity = new NilaiEntity();
         flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menyimpan ?","Konfirmasi", JOptionPane.YES_NO_OPTION);
@@ -424,8 +478,13 @@ public class FormNilai extends javax.swing.JFrame {
             entity.setNilai_tugas(Integer.parseInt(inpNilaiTugas.getText()));
             entity.setTahun_ajaran(cmbTahunAjaran.getSelectedItem().toString());
             try {
-                loadInsertNilai(entity);
-                loadTable();
+                int validasi = validasiNilai(entity);
+                if(validasi > 0){
+                    loadUpdateNilai(entity);
+                    loadNilaiByNis(nis);
+                }else{
+                    loadInsertNilai(entity);
+                }
                 actionField(false, false, false, false, false, false,false,false,false);
                 actionButton(true, false, false, true);
                 clearField();
@@ -479,6 +538,53 @@ public class FormNilai extends javax.swing.JFrame {
     private void inpKelasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpKelasKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_inpKelasKeyTyped
+
+    private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
+        try {
+            // TODO add your handling code here:
+            loadNilaiByNis(inpCari.getText().toString());
+        } catch (Exception ex) {
+            Logger.getLogger(FormNilai.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCariActionPerformed
+
+    private void inpCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpCariActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_inpCariActionPerformed
+
+    private void inpCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpCariKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpCariKeyPressed
+
+    private void inpCariKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpCariKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inpCariKeyTyped
+
+    private void tableNilaiSiswaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableNilaiSiswaMouseClicked
+        // TODO add your handling code here:
+        int i = tableNilaiSiswa.getSelectedRow();
+
+        TableModel model = tableNilaiSiswa.getModel();
+        cmbNamaSiswa.setSelectedItem(model.getValueAt(i, 0).toString() + " - " + model.getValueAt(i, 1).toString());
+        inpKelas.setText(model.getValueAt(i, 2).toString());
+        cmbMatpel.setSelectedItem(model.getValueAt(i, 3).toString() + " - " + model.getValueAt(i, 4).toString());
+        inpNilaiUts.setText(model.getValueAt(i, 5).toString());
+        inpNilaiUas.setText(model.getValueAt(i, 6).toString());
+        inpNilaiTugas.setText(model.getValueAt(i, 7).toString());
+        cmbTahunAjaran.setSelectedItem(model.getValueAt(i, 8).toString());
+
+        actionButton(false, true, true, false);
+        actionField(true, true, true, true, true, true,true,true,true);
+    }//GEN-LAST:event_tableNilaiSiswaMouseClicked
+
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = new DefaultTableModel();
+        tableNilaiSiswa.setModel(model);
+        model.getDataVector().removeAllElements();
+        inpCari.setText("");
+    }//GEN-LAST:event_btnRefreshActionPerformed
     
     private void loadSiswa() throws Exception{
         cmbNamaSiswa.removeAllItems();
@@ -531,7 +637,7 @@ public class FormNilai extends javax.swing.JFrame {
             public void run() {
                 FormNilai formNilai;
                 try {
-                    formNilai = new FormNilai();
+                    formNilai = new FormNilai(); 
                     formNilai.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     formNilai.setVisible(true);
                 } catch (Exception ex) {
@@ -554,6 +660,18 @@ public class FormNilai extends javax.swing.JFrame {
         clearField();
     }
     
+    private void loadUpdateNilai(NilaiEntity data) throws Exception {
+        boolean result = false;
+        result = nilaiService.updateNilai(data);
+        if(result){
+            JOptionPane.showMessageDialog(null, "Data berhasil di ubah");
+        }else{
+            JOptionPane.showMessageDialog(null, "Data gagal di diubah");
+        }
+        
+        clearField();
+    }
+    
     private void loadTable() throws Exception{
         List<Map<String,Object>> list = new ArrayList<Map<String, Object>>();
         DefaultTableModel model = new DefaultTableModel();
@@ -562,6 +680,7 @@ public class FormNilai extends javax.swing.JFrame {
         model.addColumn("NIS");
         model.addColumn("Nama Siswa");
         model.addColumn("Kelas");
+        model.addColumn("Kode Mata Pelajaran");
         model.addColumn("Mata Pelajaran");
         model.addColumn("Nilai UTS");
         model.addColumn("Nilai UAS");
@@ -675,14 +794,61 @@ public class FormNilai extends javax.swing.JFrame {
        
     }
     
+    private void loadNilaiByNis(String param) throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        DefaultTableModel model = new DefaultTableModel();
+        tableNilaiSiswa.setModel(model);
+        model.getDataVector().removeAllElements();
+        model.addColumn("NIS");
+        model.addColumn("Nama Siswa");
+        model.addColumn("Kelas");
+        model.addColumn("Kode Mata Pelajaran");
+        model.addColumn("Mata Pelajaran");
+        model.addColumn("UTS");
+        model.addColumn("UAS");
+        model.addColumn("Tugas");
+        model.addColumn("Tahun Ajaran");
+        try{
+            list = nilaiService.getTableNilaiByNis(param);
+            for(int i = 0 ; i < list.size() ; i++){
+                Object[] obj = new Object[9];
+                obj[0] = list.get(i).get("nis");
+                obj[1] = list.get(i).get("nama_siswa");
+                obj[2] = list.get(i).get("kelas");
+                obj[3] = list.get(i).get("kode_matpel");
+                obj[4] = list.get(i).get("nama_matpel");
+                obj[5] = list.get(i).get("uts");
+                obj[6] = list.get(i).get("uas");
+                obj[7] = list.get(i).get("tugas");
+                obj[8] = list.get(i).get("tahun_ajaran");
+                model.addRow(obj);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
+    public int validasiNilai(NilaiEntity data) throws Exception{
+        int count = 0;
+        try{
+            count = nilaiService.validasiNilai(data);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return count;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
+    private javax.swing.JButton btnCari;
     private javax.swing.JButton btnKeluar;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
     private javax.swing.JComboBox cmbMatpel;
     private javax.swing.JComboBox cmbNamaSiswa;
     private javax.swing.JComboBox cmbTahunAjaran;
+    private javax.swing.JTextField inpCari;
     private javax.swing.JTextField inpKelas;
     private javax.swing.JTextField inpNilaiTugas;
     private javax.swing.JTextField inpNilaiUas;
@@ -695,6 +861,7 @@ public class FormNilai extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableNilaiSiswa;
