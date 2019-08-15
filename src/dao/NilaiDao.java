@@ -83,15 +83,18 @@ public class NilaiDao {
         return list;
     }
     
-    public String kelasSiswa(String nis) throws Exception{
-        String kelas = "";
+    public List<Map<String,Object>> kelasSiswa(String nis) throws Exception{
+        List<Map<String,Object>> list  = new ArrayList<>();
         try{
             String query = "select * from nilai_siswa.siswa aa where aa.nis = ?";
             ps = conn.prepareStatement(query);
             ps.setString(1, nis);
             rs = ps.executeQuery();
             while(rs.next()){
-                kelas = rs.getString("kelas");
+                Map<String,Object> map = new HashMap<>();
+                map.put("kelas", rs.getString("kelas"));
+                map.put("tahun_ajaran",rs.getString("tahun_ajaran"));
+                list.add(map);
             }
         }catch(Exception e){
            throw new Exception(e.getMessage());
@@ -99,7 +102,7 @@ public class NilaiDao {
             ps.close();
             rs.close();
         }
-        return kelas;
+        return list;
     }
     
     public List<Map<String,Object>> getTableNilaiByNis(String param) throws Exception{
@@ -142,7 +145,8 @@ public class NilaiDao {
                     + "n.tugas = ? "
                     + "where n.nis = ? "
                     + "and n.tahun_ajaran = ? "
-                    + "and n.kode_matpel = ?";
+                    + "and n.kode_matpel = ? "
+                    + "and n.semester = ?";
             ps = conn.prepareStatement(query);
              ps.setInt(1,data.getNilai_uts());
             ps.setInt(2, data.getNilai_uas());
@@ -150,6 +154,7 @@ public class NilaiDao {
             ps.setString(4, data.getNis());
             ps.setString(5, data.getTahun_ajaran());
             ps.setString(6, data.getId_matpel()); 
+            ps.setInt(7, data.getSemester());
             if(ps.executeUpdate() == 1){
                 result = true;
             }
@@ -165,10 +170,11 @@ public class NilaiDao {
     public int validasiNilai(NilaiEntity data) throws Exception {
          int  count = 0;
          try{
-             ps = conn.prepareStatement("select * from nilai where nis = ? and kode_matpel = ? and tahun_ajaran = ?");
+             ps = conn.prepareStatement("select * from nilai where nis = ? and kode_matpel = ? and tahun_ajaran = ? and semester = ?");
              ps.setString(1, data.getNis());
              ps.setString(2, data.getId_matpel());
              ps.setString(3, data.getTahun_ajaran());
+             ps.setInt(4, data.getSemester());
              if(ps.execute()){
                  count = 1;
              }

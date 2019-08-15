@@ -47,7 +47,11 @@ public class SiswaService extends KoneksiDb {
             list = matpel.getAllMatpel();
             
             for(int i = 0 ; i < list.size(); i++){
-                result = siswa.insertNilaiSiswaFirst(data, list.get(i).getId_matpel());
+                result = siswa.insertNilaiSiswaFirst(data, list.get(i).getId_matpel(), 1);
+            }
+            
+            for(int i = 0 ; i < list.size(); i++){
+                result = siswa.insertNilaiSiswaFirst(data, list.get(i).getId_matpel(), 2);
             }
             
             if(result){

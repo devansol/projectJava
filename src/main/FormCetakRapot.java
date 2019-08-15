@@ -58,6 +58,8 @@ public class FormCetakRapot extends javax.swing.JFrame {
         cmbTahunAjaran = new javax.swing.JComboBox();
         btnCetakRapot = new javax.swing.JButton();
         btnKeluar = new javax.swing.JButton();
+        cmbSemester = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,32 +90,38 @@ public class FormCetakRapot extends javax.swing.JFrame {
             }
         });
 
+        cmbSemester.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Pilih--", "1", "2" }));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Semester");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(61, 61, 61)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnCetakRapot, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                                .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(cmbNis, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(22, 22, 22)))))
-                .addContainerGap(223, Short.MAX_VALUE))
+                        .addComponent(cmbNis, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(245, Short.MAX_VALUE))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(130, 130, 130)
+                .addComponent(jLabel1)
+                .addContainerGap(245, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnCetakRapot, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(221, 221, 221))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,11 +136,15 @@ public class FormCetakRapot extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCetakRapot)
-                    .addComponent(btnKeluar))
-                .addContainerGap(112, Short.MAX_VALUE))
+                    .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnKeluar)
+                    .addComponent(btnCetakRapot))
+                .addGap(83, 83, 83))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -162,6 +174,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
 
         String nis = getCodeComboBox(cmbNis.getSelectedItem().toString());
         String tahun_ajaran = cmbTahunAjaran.getSelectedItem().toString();
+        int semester = Integer.parseInt(cmbSemester.getSelectedItem().toString());
         try {
             if(nis.equals("--Pilih--")){
                 JOptionPane.showMessageDialog(null, "Nis belum di pilih !");
@@ -172,7 +185,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
                 cmbTahunAjaran.requestFocus();
                 return;
             }else{
-                loadCetakRapot(nis,tahun_ajaran);
+                loadCetakRapot(nis,tahun_ajaran,semester);
             }
         } catch (Exception ex) {
             Logger.getLogger(FormCetakRapot.class.getName()).log(Level.SEVERE, null, ex);
@@ -260,7 +273,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
         }
     }
     
-    private void loadCetakRapot(String nis, String tahun_ajaran) throws Exception{
+    private void loadCetakRapot(String nis, String tahun_ajaran,int semester) throws Exception{
         try {
             String namaFile = "src"+File.separator+"report"+File.separator+"rapot.jasper";
             Connection conn = service.KoneksiDb.getConnection();
@@ -268,6 +281,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
             Map<String,Object> map =  new HashMap<String, Object>();
             map.put("nis", nis);
             map.put("tahun_ajaran", tahun_ajaran);
+            map.put("semester", semester);
             JasperPrint jprint = JasperFillManager.fillReport(namaFile.toString(), map, conn);
             if(jprint.getPages().size() != 0){
                 JasperViewer.viewReport(jprint,false);
@@ -292,10 +306,12 @@ public class FormCetakRapot extends javax.swing.JFrame {
     private javax.swing.JButton btnCetakRapot;
     private javax.swing.JButton btnKeluar;
     private javax.swing.JComboBox cmbNis;
+    private javax.swing.JComboBox cmbSemester;
     private javax.swing.JComboBox cmbTahunAjaran;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

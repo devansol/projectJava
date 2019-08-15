@@ -57,19 +57,19 @@ public class NilaiService extends KoneksiDb {
          return list;
      }
      
-     public String kelasSiswa(String nis) throws Exception{
-        String kelas = "";
+     public List<Map<String,Object>> kelasSiswa(String nis) throws Exception{
+        List<Map<String,Object>> list = new ArrayList<>();
         try{
             conn = getConnection();
             conn.setAutoCommit(false);
             dao.setConnection(conn);
-            kelas = dao.kelasSiswa(nis);
+            list = dao.kelasSiswa(nis);
         }catch(Exception e){
            throw new Exception(e.getMessage());
         }finally{
            conn.close();
         }
-        return kelas;
+        return list;
     }
      
      public List<Map<String,Object>> getTableNilaiByNis(String param) throws Exception{

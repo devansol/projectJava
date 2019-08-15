@@ -16,6 +16,7 @@ public class NilaiEntity {
     private int nilai_uts;
     private int nilai_tugas;
     private String tahun_ajaran;
+    private int semester;
 
     /**
      * @return the nis
@@ -99,6 +100,20 @@ public class NilaiEntity {
      */
     public void setTahun_ajaran(String tahun_ajaran) {
         this.tahun_ajaran = tahun_ajaran;
+    }
+
+    /**
+     * @return the semester
+     */
+    public int getSemester() {
+        return semester;
+    }
+
+    /**
+     * @param semester the semester to set
+     */
+    public void setSemester(int semester) {
+        this.semester = semester;
     }
     
     

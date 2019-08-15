@@ -161,18 +161,19 @@ public class SiswaDao {
         return update;
     }
     
-    public boolean insertNilaiSiswaFirst(Siswa siswa, String kode_matpel) throws Exception{
+    public boolean insertNilaiSiswaFirst(Siswa siswa, String kode_matpel, int semester) throws Exception{
         boolean insert = false;
         try{
             ps = conn.prepareStatement("insert into nilai "
-                    + "(nis, kode_matpel, uts, uas, tugas, tahun_ajaran) "
-                    + "values (?,?,?,?,?,?)");
+                    + "(nis, kode_matpel, uts, uas, tugas, tahun_ajaran, semester) "
+                    + "values (?,?,?,?,?,?,?)");
             ps.setString(1, siswa.getNis());
             ps.setString(2, kode_matpel);
             ps.setInt(3, 0);
             ps.setInt(4, 0);
             ps.setInt(5, 0);
             ps.setString(6, siswa.getTahun_ajaran());
+            ps.setInt(7, semester);
             ps.executeUpdate();
             insert = true;
         }catch(Exception e){

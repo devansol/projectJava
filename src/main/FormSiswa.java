@@ -384,6 +384,7 @@ public class FormSiswa extends javax.swing.JFrame {
         
         txtAlamat.setText(model.getValueAt(i, 3).toString());
         cmbKelas.setSelectedItem(model.getValueAt(i, 4).toString());
+        cmbTahunAjaran.setSelectedItem(model.getValueAt(i, 5).toString());
         actionButton(false, true, true, false);
         actionField(true, true, true, true, true,true);
     }//GEN-LAST:event_tabelSiswaMouseClicked
