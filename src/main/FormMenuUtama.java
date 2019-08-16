@@ -5,11 +5,14 @@
  */
 package main;
 
-import entity.Guru;
 import entity.Session;
+import java.awt.Dimension;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
+import javax.swing.Box;
 
 /**
  *
@@ -25,26 +28,38 @@ public class FormMenuUtama extends javax.swing.JFrame {
     String sessionAkses = Session.getSessionAkses();
     public FormMenuUtama() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
+        this.setPreferredSize(new Dimension(896, 418));
+        this.setResizable(false);
+        tanggalSekarang();
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(menuUser);
+        menuBar.add(status);
+        menuUser.setText("Login User : " + sessionName);
         if(sessionAkses.equals("2")){
-            btnCetak.setVisible(false);
-            btnGuru.setVisible(false);
-            btnSiswa.setVisible(false);
-            btnInputNilai.setVisible(true);
-            btnLogout.setVisible(true);
+            btnCetak.setEnabled(false);
+            btnGuru.setEnabled(false);
+            btnSiswa.setEnabled(false);
+            btnInputNilai.setEnabled(true);
+            btnLogout.setEnabled(true);
+            status.setText("Status User : Guru");
+//            labelStatus.setText("Guru");
         }else if(sessionAkses.equals("1")){
-            btnCetak.setVisible(true);
-            btnGuru.setVisible(false);
-            btnSiswa.setVisible(false);
-            btnInputNilai.setVisible(true);
-            btnLogout.setVisible(true);
+            btnCetak.setEnabled(true);
+            btnGuru.setEnabled(false);
+            btnSiswa.setEnabled(false);
+            btnInputNilai.setEnabled(true);
+            btnLogout.setEnabled(true);
+            status.setText("Status User : Wali Kelas");
         }else{
-            btnCetak.setVisible(false);
-            btnGuru.setVisible(true);
-            btnSiswa.setVisible(true);
-            btnInputNilai.setVisible(false);
-            btnLogout.setVisible(true);
+            btnCetak.setEnabled(false);
+            btnGuru.setEnabled(true);
+            btnSiswa.setEnabled(true);
+            btnInputNilai.setEnabled(false);
+            btnLogout.setEnabled(true);
         }
-        labelNamaGuru.setText(sessionName);
+//        labelNamaGuru.setText(sessionName);
     }
 
     /**
@@ -59,14 +74,20 @@ public class FormMenuUtama extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jFrame1 = new javax.swing.JFrame();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        labelNamaGuru = new javax.swing.JLabel();
         btnInputNilai = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         btnSiswa = new javax.swing.JButton();
         btnGuru = new javax.swing.JButton();
         btnCetak = new javax.swing.JButton();
+        backgroundJava1 = new img.BackgroundJava();
+        backgroundJava3 = new img.BackgroundJava();
+        menuBar = new javax.swing.JMenuBar();
+        date = new javax.swing.JMenu();
+        menuUser = new javax.swing.JMenu();
+        status = new javax.swing.JMenu();
 
         jMenu3.setText("jMenu3");
 
@@ -74,13 +95,24 @@ public class FormMenuUtama extends javax.swing.JFrame {
 
         jMenuItem1.setText("jMenuItem1");
 
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(896, 418));
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(896, 418));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Selamat Datang");
-
-        labelNamaGuru.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        labelNamaGuru.setText("Nama Guru");
+        jLabel1.setText("Selamat Datang di Aplikasi Input Nilai Siswa");
 
         btnInputNilai.setText("Input Nilai");
         btnInputNilai.addActionListener(new java.awt.event.ActionListener() {
@@ -117,61 +149,165 @@ public class FormMenuUtama extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout backgroundJava1Layout = new javax.swing.GroupLayout(backgroundJava1);
+        backgroundJava1.setLayout(backgroundJava1Layout);
+        backgroundJava1Layout.setHorizontalGroup(
+            backgroundJava1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        backgroundJava1Layout.setVerticalGroup(
+            backgroundJava1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout backgroundJava3Layout = new javax.swing.GroupLayout(backgroundJava3);
+        backgroundJava3.setLayout(backgroundJava3Layout);
+        backgroundJava3Layout.setHorizontalGroup(
+            backgroundJava3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        backgroundJava3Layout.setVerticalGroup(
+            backgroundJava3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
+                .addGap(68, 68, 68)
+                .addComponent(backgroundJava1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelNamaGuru))
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnSiswa, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                            .addComponent(btnInputNilai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnGuru, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                            .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                            .addComponent(btnCetak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(217, Short.MAX_VALUE))
+                        .addGap(63, 63, 63)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnInputNilai, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCetak, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuru, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addComponent(backgroundJava3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(203, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(labelNamaGuru))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnInputNilai)
-                    .addComponent(btnCetak))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuru)
-                    .addComponent(btnSiswa))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLogout)
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(backgroundJava3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backgroundJava1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel1)
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnCetak, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnGuru, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnInputNilai, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(704, Short.MAX_VALUE))
         );
+
+        date.setText("Date");
+        menuBar.add(date);
+
+        menuUser.setText("User");
+        menuBar.add(menuUser);
+
+        status.setText("Status");
+        menuBar.add(status);
+
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1006, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 909, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 1, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
+        // TODO add your handling code here:
+        FormCetakRapot formRapot;
+        try {
+            formRapot = new FormCetakRapot();
+            formRapot.setVisible(true);
+//            formRapot.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            formRapot.setTitle("Form Cetak Laporan");
+            this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnCetakActionPerformed
+
+    private void btnGuruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuruActionPerformed
+        // TODO add your handling code here:
+        FormGuru formGuru;
+        try {
+            formGuru = new FormGuru();
+            formGuru.setVisible(true);
+//            formGuru.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            formGuru.setTitle("Form Input Guru");
+            this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnGuruActionPerformed
+
+    private void btnSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiswaActionPerformed
+        // TODO add your handling code here:
+        FormSiswa formSiswa;
+        try {
+            formSiswa = new FormSiswa();
+            formSiswa.setVisible(true);
+//            formSiswa.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            formSiswa.setTitle("Form Input Siswa");
+            this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnSiswaActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        try {
+            FormLogin loginForm = new FormLogin();
+            loginForm.setVisible(true);
+            loginForm.setTitle("Form Login");
+//            loginForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnInputNilaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInputNilaiActionPerformed
         // TODO add your handling code here:
@@ -180,70 +316,13 @@ public class FormMenuUtama extends javax.swing.JFrame {
             formNilai = new FormNilai();
             formNilai.setVisible(true);
             formNilai.setTitle("Form Input Nilai");
-            formNilai.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//            formNilai.setExtendedState(JFrame.MAXIMIZED_BOTH);
             this.setVisible(false);
         } catch (Exception ex) {
             Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
     }//GEN-LAST:event_btnInputNilaiActionPerformed
-
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        try {
-            FormLogin loginForm = new FormLogin();
-            loginForm.setVisible(true);
-            loginForm.setTitle("Form Login");
-            loginForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.setVisible(false);
-        } catch (Exception ex) {
-            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnLogoutActionPerformed
-
-    private void btnGuruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuruActionPerformed
-        // TODO add your handling code here:
-        FormGuru formGuru;
-        try {
-            formGuru = new FormGuru();
-            formGuru.setVisible(true);
-            formGuru.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            formGuru.setTitle("Form Input Guru");
-            this.setVisible(false);
-        } catch (Exception ex) {
-            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-    }//GEN-LAST:event_btnGuruActionPerformed
-
-    private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
-        // TODO add your handling code here:
-        FormCetakRapot formRapot;
-        try {
-            formRapot = new FormCetakRapot();
-            formRapot.setVisible(true);
-            formRapot.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            formRapot.setTitle("Form Cetak Laporan");
-            this.setVisible(false);
-        } catch (Exception ex) {
-            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }//GEN-LAST:event_btnCetakActionPerformed
-
-    private void btnSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiswaActionPerformed
-        // TODO add your handling code here:
-        FormSiswa formSiswa;
-        try {
-            formSiswa = new FormSiswa();
-            formSiswa.setVisible(true);
-            formSiswa.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            formSiswa.setTitle("Form Input Siswa");
-            this.setVisible(false);
-        } catch (Exception ex) {
-            Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }//GEN-LAST:event_btnSiswaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -276,23 +355,63 @@ public class FormMenuUtama extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 FormMenuUtama menuUtama = new FormMenuUtama();
-                menuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//                menuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 menuUtama.setVisible(true);
             }
         });
     }
+    
+    public void tanggalSekarang(){     
+        Thread clock = new Thread(){
+            public void run(){
+                for(;;){
+                    Calendar cal = new GregorianCalendar();
+                    int tanggal = cal.get(Calendar.DAY_OF_MONTH);
+                    int bulan1 = cal.get(Calendar.MONTH);
+                    int tahun = cal.get(Calendar.YEAR);
+                    java.util.Date d = new java.util.Date();
+                    String bulan = "MMMM";
+                    String dayweek = "EEEE";
+                    String jam = "HH";
+                    String menit = "mm";
+                    String detik = "ss";
+                    SimpleDateFormat sdf = new SimpleDateFormat(dayweek);
+                    SimpleDateFormat bln = new SimpleDateFormat(bulan);
+                    SimpleDateFormat hr = new SimpleDateFormat(jam);
+                    SimpleDateFormat mnt = new SimpleDateFormat(menit);
+                    SimpleDateFormat sd = new SimpleDateFormat(detik);
+                    date.setText("Tanggal: "+sdf.format(d)+", "+tanggal+" "+(bln.format(d))+" "+tahun+"   Waktu: "+hr.format(d)+":"+(mnt.format(d))+":"+sd.format(d));
+//                    tgl_resep.setText(""+sdf.format(d)+", "+tanggal+" / "+(bulan1+1)+" / "+tahun);
+//                    tgl_rekam_medis.setText(tanggal+"-"+(bulan1+1)+"-"+tahun);
+                    try{
+                        sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };        
+        clock.start();        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private img.BackgroundJava backgroundJava1;
+    private img.BackgroundJava backgroundJava2;
+    private img.BackgroundJava backgroundJava3;
     private javax.swing.JButton btnCetak;
     private javax.swing.JButton btnGuru;
     private javax.swing.JButton btnInputNilai;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnSiswa;
+    private javax.swing.JMenu date;
+    private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel labelNamaGuru;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuUser;
+    private javax.swing.JMenu status;
     // End of variables declaration//GEN-END:variables
 }

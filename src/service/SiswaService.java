@@ -135,5 +135,25 @@ public class SiswaService extends KoneksiDb {
         return result;
     }
     
+    public boolean hapusSiswa(String nis) throws Exception {
+        boolean delete = false;
+        try{
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            siswa.setConnection(conn);
+            delete = siswa.hapusSiswa(nis);
+            if(delete){
+                conn.commit();
+            }else{
+                conn.rollback();
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return delete;
+    }
+    
     
 }

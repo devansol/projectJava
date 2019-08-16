@@ -136,4 +136,25 @@ public class GuruService extends KoneksiDb {
         }
         return result;
     }
+    
+    
+    public boolean hapusGuru(String nip) throws Exception {
+        boolean delete = false;
+        try{
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            guru.setConnection(conn);
+            delete = guru.hapusGuru(nip);
+            if(delete) {
+                conn.commit();
+            }else{
+                conn.rollback();
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return delete;
+    }
 }

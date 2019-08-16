@@ -7,6 +7,7 @@ package main;
 
 import javax.swing.JFrame;
 import entity.Siswa;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -29,6 +30,10 @@ public class FormSiswa extends javax.swing.JFrame {
      */
     public FormSiswa() throws Exception {
         initComponents();
+//        int[] arr = {896, 418};
+        this.setLocationRelativeTo(null);
+        this.setPreferredSize(new Dimension(896, 418));
+        this.setResizable(false);
         siswa = new SiswaService();
         inpNis.setEditable(false);
         actionButton(true, false, false, true);
@@ -78,6 +83,7 @@ public class FormSiswa extends javax.swing.JFrame {
         btnRefresh = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         cmbTahunAjaran = new javax.swing.JComboBox();
+        btnHapus = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -173,6 +179,13 @@ public class FormSiswa extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Tahun Ajaran");
 
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -224,7 +237,9 @@ public class FormSiswa extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btncari)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnRefresh))
+                                .addComponent(btnRefresh)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnHapus))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -239,7 +254,8 @@ public class FormSiswa extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btncari)
-                    .addComponent(btnRefresh))
+                    .addComponent(btnRefresh)
+                    .addComponent(btnHapus))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -399,6 +415,28 @@ public class FormSiswa extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRefreshActionPerformed
 
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+
+        try{
+            int flag =   flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menghapus data ini ?","Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if(flag == 0){
+                 boolean delete = siswa.hapusSiswa(inpNis.getText());
+                 if(delete){
+                    JOptionPane.showMessageDialog(null, "Data berhasil di hapus");
+                    loadTableAllSiswa();
+                    actionButton(true, false, false, true);
+                    actionField(false, false, false, false, false,false);
+                    clearField();
+                 }else{
+                     JOptionPane.showMessageDialog(null, "Data gagal di hapus");
+                 }
+            }
+           
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -432,7 +470,7 @@ public class FormSiswa extends javax.swing.JFrame {
                 FormSiswa form;
                 try {
                     form = new FormSiswa();
-                    form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//                    form.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     form.setVisible(true);
                 } catch (Exception ex) {
                     Logger.getLogger(FormSiswa.class.getName()).log(Level.SEVERE, null, ex);
@@ -560,6 +598,7 @@ public class FormSiswa extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
+    private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnKeluar;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSimpan;

@@ -184,4 +184,19 @@ public class SiswaDao {
         return insert;
     }
     
+    public boolean hapusSiswa(String nis) throws Exception {
+        boolean delete = false;
+        try{
+            ps = conn.prepareStatement("delete from siswa where nis = ?");
+            ps.setString(1, nis);
+            ps.executeUpdate();
+            delete = true;
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+        }
+        return delete;
+    }
+    
 }

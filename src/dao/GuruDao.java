@@ -188,4 +188,19 @@ public class GuruDao {
         }
         return result;
     }
+    
+     public boolean hapusGuru(String nip) throws Exception {
+        boolean delete = false;
+        try{
+            ps = conn.prepareStatement("delete from guru  where nip = ?");
+            ps.setString(1, nip);
+            ps.executeUpdate();
+            delete = true;
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+        }
+        return delete;
+    }
 }

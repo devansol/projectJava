@@ -5,9 +5,9 @@
  */
 package main;
 
+import entity.Session;
 import entity.Siswa;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
 import java.io.File;
 import java.sql.Connection;
 import java.util.Calendar;
@@ -16,11 +16,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
+import javax.swing.Box;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.view.JasperViewer;
 import service.SiswaService;
 /**
@@ -32,11 +31,31 @@ public class FormCetakRapot extends javax.swing.JFrame {
     /**
      * Creates new form FormCetakRapot
      */
+    String sessionName = Session.getSessionName();
+    String sessionNip = Session.getSessionNip();
+    String sessionAkses = Session.getSessionAkses();
+    
     public FormCetakRapot() throws Exception {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setPreferredSize(new Dimension(896, 418));
+        this.setResizable(false);
         siswaService = new SiswaService();
         loadSiswa();
         tahunAjaran();
+        
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(menuUser);
+        menuBar.add(status);
+        menuUser.setText("Login User : " + sessionName);
+        if(sessionAkses.equals("2")){
+            status.setText("Status User : Guru");
+//            labelStatus.setText("Guru");
+        }else if(sessionAkses.equals("1")){
+            status.setText("Status User : Wali Kelas");
+        }else{
+           status.setText("Status User : Admin");
+        }
 //        cmbNis.addActionListener(new FormCetakRapot.ComboBoxListener());
 //        inpNamaSiswaReport.setEditable(false);
     }
@@ -60,6 +79,10 @@ public class FormCetakRapot extends javax.swing.JFrame {
         btnKeluar = new javax.swing.JButton();
         cmbSemester = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
+        menuBar = new javax.swing.JMenuBar();
+        date = new javax.swing.JMenu();
+        menuUser = new javax.swing.JMenu();
+        status = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,6 +93,11 @@ public class FormCetakRapot extends javax.swing.JFrame {
         jLabel2.setText("NIS");
 
         cmbNis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbNis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbNisActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Tahun Ajaran");
@@ -99,29 +127,29 @@ public class FormCetakRapot extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cmbNis, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(245, Short.MAX_VALUE))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addComponent(jLabel1)
-                .addContainerGap(245, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 206, Short.MAX_VALUE)
                 .addComponent(btnCetakRapot, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52)
                 .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(221, 221, 221))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbTahunAjaran, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbNis, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(130, 130, 130)
+                        .addComponent(jLabel1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,12 +168,23 @@ public class FormCetakRapot extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbSemester, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnKeluar)
                     .addComponent(btnCetakRapot))
                 .addGap(83, 83, 83))
         );
+
+        date.setText("Date");
+        menuBar.add(date);
+
+        menuUser.setText("User");
+        menuBar.add(menuUser);
+
+        status.setText("Status");
+        menuBar.add(status);
+
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,7 +205,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
         FormMenuUtama formMenuUtama = new FormMenuUtama();
         formMenuUtama.setVisible(true);
         formMenuUtama.setTitle("Menu Utama");
-        formMenuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        formMenuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(false);
     }//GEN-LAST:event_btnKeluarActionPerformed
 
@@ -191,6 +230,11 @@ public class FormCetakRapot extends javax.swing.JFrame {
             Logger.getLogger(FormCetakRapot.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnCetakRapotActionPerformed
+
+    private void cmbNisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbNisActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cmbNisActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,7 +271,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
                     FormCetakRapot formRapot;
                     formRapot = new FormCetakRapot();
                     formRapot.setVisible(true);
-                    formRapot.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//                    formRapot.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     formRapot.setTitle("Form Cetak Laporan");
                 } catch (Exception ex) {
                     Logger.getLogger(FormCetakRapot.class.getName()).log(Level.SEVERE, null, ex);
@@ -308,10 +352,14 @@ public class FormCetakRapot extends javax.swing.JFrame {
     private javax.swing.JComboBox cmbNis;
     private javax.swing.JComboBox cmbSemester;
     private javax.swing.JComboBox cmbTahunAjaran;
+    private javax.swing.JMenu date;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuUser;
+    private javax.swing.JMenu status;
     // End of variables declaration//GEN-END:variables
 }

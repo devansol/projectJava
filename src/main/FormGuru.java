@@ -6,6 +6,7 @@
 package main;
 
 import entity.Guru;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,9 @@ public class FormGuru extends javax.swing.JFrame {
     public FormGuru() throws Exception {
         guruService = new GuruService();
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setPreferredSize(new Dimension(896, 418));
+        this.setResizable(false);
         inpNip.setEditable(false);
         actionButton(true, false, false, true);
         actionField(false, false, false, false,false);
@@ -71,6 +75,7 @@ public class FormGuru extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnCari = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -157,6 +162,13 @@ public class FormGuru extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Hapus");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -205,7 +217,9 @@ public class FormGuru extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnCari)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnRefresh))
+                                .addComponent(btnRefresh)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(81, 81, 81))))
         );
@@ -221,7 +235,8 @@ public class FormGuru extends javax.swing.JFrame {
                     .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(btnCari)
-                    .addComponent(btnRefresh))
+                    .addComponent(btnRefresh)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -335,7 +350,7 @@ public class FormGuru extends javax.swing.JFrame {
         // TODO add your handling code here:
         FormMenuUtama menuUtama = new FormMenuUtama();
         menuUtama.setVisible(true);
-        menuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        menuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
         menuUtama.setTitle("Menu Utama");
         this.setVisible(false);
     }//GEN-LAST:event_btnKeluarActionPerformed
@@ -381,6 +396,28 @@ public class FormGuru extends javax.swing.JFrame {
         actionField(true, true, true, true,true);
     }//GEN-LAST:event_tabelGuruMouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try{
+            int flag =   flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menghapus data ini ?","Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if(flag == 0){
+                 boolean delete = guruService.hapusGuru(inpNip.getText());
+                 if(delete){
+                     JOptionPane.showMessageDialog(null, "Data berhasil di hapus");
+                     loadTableGuru();
+                     actionButton(true, false, false, true);
+                    actionField(false, false, false, false,false);
+                    clearField();
+                 }else{
+                     JOptionPane.showMessageDialog(null, "Data gagal di hapus");
+                 }
+            }
+           
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -414,7 +451,7 @@ public class FormGuru extends javax.swing.JFrame {
                 FormGuru formGuru = null;
                 try {
                     formGuru = new FormGuru();
-                    formGuru.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//                    formGuru.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     formGuru.setVisible(true);
                     formGuru.setTitle("Form Guru");
                 } catch (Exception ex) {
@@ -526,6 +563,7 @@ public class FormGuru extends javax.swing.JFrame {
     private javax.swing.JTextField inpNamaGuru;
     private javax.swing.JTextField inpNip;
     private javax.swing.JPasswordField inpPassword;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
