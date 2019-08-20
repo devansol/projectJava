@@ -470,9 +470,6 @@ public class FormNilai extends javax.swing.JFrame {
 
     private void inpNilaiTugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiTugasKeyPressed
         // TODO add your handling code here:
-        if(!Character.isDigit(evt.getKeyChar())){
-            evt.consume();
-        }
     }//GEN-LAST:event_inpNilaiTugasKeyPressed
 
     private void inpNilaiTugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiTugasActionPerformed
@@ -494,9 +491,6 @@ public class FormNilai extends javax.swing.JFrame {
 
     private void inpNilaiUasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUasKeyPressed
         // TODO add your handling code here:
-        if(!Character.isDigit(evt.getKeyChar())){
-            evt.consume();
-        }
     }//GEN-LAST:event_inpNilaiUasKeyPressed
 
     private void inpNilaiUasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiUasActionPerformed
@@ -581,9 +575,7 @@ public class FormNilai extends javax.swing.JFrame {
     }//GEN-LAST:event_inpNilaiUtsKeyTyped
 
     private void inpNilaiUtsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inpNilaiUtsKeyPressed
-        if(!Character.isDigit(evt.getKeyChar())){
-            evt.consume();
-        }
+
     }//GEN-LAST:event_inpNilaiUtsKeyPressed
 
     private void inpNilaiUtsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inpNilaiUtsActionPerformed

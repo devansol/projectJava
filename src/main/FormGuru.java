@@ -6,13 +6,13 @@
 package main;
 
 import entity.Guru;
+import entity.MataPelajaran;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -23,19 +23,25 @@ import service.*;
  */
 public class FormGuru extends javax.swing.JFrame {
     GuruService guruService;
+    MatpelService matpelService;
     /**
      * Creates new form FormGuru
      */
     public FormGuru() throws Exception {
         guruService = new GuruService();
+        matpelService = new MatpelService();
         initComponents();
         this.setLocationRelativeTo(null);
         this.setPreferredSize(new Dimension(896, 418));
         this.setResizable(false);
         inpNip.setEditable(false);
         actionButton(true, false, false, true);
-        actionField(false, false, false, false,false);
+        actionField(false, false, false, false,false,false);
         loadTableGuru();
+        loadMatpel();
+        loadTableDetailGuru();
+//        cmbMataPelajaran.setVisible(false);
+//        lblmatpel.setVisible(false);
     }
 
     /**
@@ -76,6 +82,16 @@ public class FormGuru extends javax.swing.JFrame {
         btnCari = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        lblmatpel = new javax.swing.JLabel();
+        cmbMataPelajaran = new javax.swing.JComboBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblDetailGuru = new javax.swing.JTable()
+        {
+            public boolean isCellEditable(int rowIndex, int colIndex)
+            {
+                return false; //Disallow the editing of any cell
+            }
+        };
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -126,6 +142,11 @@ public class FormGuru extends javax.swing.JFrame {
         Akses.setText("Akses");
 
         cmbAkses.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Pilih--", "Guru", "Wali Kelas" }));
+        cmbAkses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAksesActionPerformed(evt);
+            }
+        });
 
         tabelGuru.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -169,15 +190,47 @@ public class FormGuru extends javax.swing.JFrame {
             }
         });
 
+        lblmatpel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblmatpel.setText("Mata Pelajaran");
+
+        cmbMataPelajaran.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--Pilih--", "Guru", "Wali Kelas" }));
+
+        tblDetailGuru.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblDetailGuru.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDetailGuruMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblDetailGuru);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(403, 403, 403)
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(102, 102, 102)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblmatpel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbMataPelajaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnTambah)
                                 .addGap(10, 10, 10)
@@ -185,18 +238,24 @@ public class FormGuru extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSimpan)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnKeluar))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(113, 113, 113)
-                                        .addComponent(jLabel1))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(77, 77, 77)
-                                        .addComponent(inpNip, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnKeluar)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(77, 77, 77)
+                        .addComponent(inpNip, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(233, 233, 233)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCari)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRefresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblEmail)
                             .addComponent(lblEmail1)
@@ -208,27 +267,16 @@ public class FormGuru extends javax.swing.JFrame {
                             .addComponent(inpEmail)
                             .addComponent(inpPassword)
                             .addComponent(cmbAkses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(inpCari, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCari)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnRefresh)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(81, 81, 81))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(22, 22, 22)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(inpNip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -255,14 +303,20 @@ public class FormGuru extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Akses)
                             .addComponent(cmbAkses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblmatpel)
+                            .addComponent(cmbMataPelajaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnTambah)
                             .addComponent(btnBatal)
                             .addComponent(btnSimpan)
                             .addComponent(btnKeluar)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -273,7 +327,9 @@ public class FormGuru extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(58, Short.MAX_VALUE))
         );
 
         pack();
@@ -284,7 +340,7 @@ public class FormGuru extends javax.swing.JFrame {
         try{
             loadNipGuru();
             actionButton(false, true, true, false);
-            actionField(true, true, true, true,true);
+            actionField(true, true, true, true,true,true);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
@@ -294,7 +350,7 @@ public class FormGuru extends javax.swing.JFrame {
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         // TODO add your handling code here:
             actionButton(true, false, false, true);
-            actionField(false, false, false, false,false);
+            actionField(false, false, false, false,false,false);
             clearField();
     }//GEN-LAST:event_btnBatalActionPerformed
 
@@ -308,12 +364,16 @@ public class FormGuru extends javax.swing.JFrame {
                 akses = 2;
             }else if(cmbAkses.getSelectedItem().toString().equals("Wali Kelas")){
                 akses = 1;
+            }else{
+                akses = 0;
             }
             guru.setNip(inpNip.getText());
             guru.setNama_guru(inpNamaGuru.getText());
             guru.setEmail(inpEmail.getText());
             guru.setPassword(inpPassword.getText());
             guru.setAkses(akses);
+            String kode_matpel = this.getCodeComboBox(cmbMataPelajaran.getSelectedItem().toString());
+            guru.setMatpel(kode_matpel);
             if(guru.getNama_guru().equals("")){
                 JOptionPane.showMessageDialog(null, "Nama Guru tidak boleh kosong !");
                 inpNamaGuru.requestFocus();
@@ -323,6 +383,12 @@ public class FormGuru extends javax.swing.JFrame {
             }else if(guru.getPassword().equals("")){
                 JOptionPane.showMessageDialog(null, "Password Guru tidak boleh kosong !");
                 inpPassword.requestFocus();
+            }else if(guru.getAkses() == 0){
+                JOptionPane.showMessageDialog(null, "Akses Guru belum di pilih !");
+                cmbAkses.requestFocus();
+            }else if(guru.getMatpel().equals("")){
+                JOptionPane.showMessageDialog(null, "Mata Pelajaran Guru belum di pilih !");
+                cmbMataPelajaran.requestFocus();
             }else{
                 int count = validasiGuru(inpNip.getText());
                 if(count > 0){
@@ -333,9 +399,10 @@ public class FormGuru extends javax.swing.JFrame {
              
                 if(result){
                     loadTableGuru();
+                    loadTableDetailGuru();
                     JOptionPane.showMessageDialog(null, "Data berhasil di simpan");
                     actionButton(true, false, false, true);
-                    actionField(false, false, false, false,false);
+                    actionField(false, false, false, false,false,false);
                     clearField();
                 }else{
                     JOptionPane.showMessageDialog(null, "Data gagal di simpan");
@@ -383,7 +450,7 @@ public class FormGuru extends javax.swing.JFrame {
         inpNip.setText(model.getValueAt(i, 0).toString());
         inpNamaGuru.setText(model.getValueAt(i, 1).toString());
         inpEmail.setText(model.getValueAt(i, 2).toString());
-        
+        inpPassword.setText(" ");
         if(model.getValueAt(i, 3).toString().equals("1")){
             akses = "Wali Kelas";
         }else if(model.getValueAt(i, 3).toString().equals("2")){
@@ -392,8 +459,9 @@ public class FormGuru extends javax.swing.JFrame {
             akses = "Guru";
         }
         cmbAkses.setSelectedItem(akses);
+//        cmbMataPelajaran.setSelectedItem(model.getValueAt(i, 4).toString() + " - " + model.getValueAt(i, 5).toString());
         actionButton(false, true, true, false);
-        actionField(true, true, true, true,true);
+        actionField(true, true, true, false,true,true);
     }//GEN-LAST:event_tabelGuruMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -402,11 +470,12 @@ public class FormGuru extends javax.swing.JFrame {
             int flag =   flag = JOptionPane.showConfirmDialog(null, "Anda yakin ingin menghapus data ini ?","Konfirmasi", JOptionPane.YES_NO_OPTION);
             if(flag == 0){
                  boolean delete = guruService.hapusGuru(inpNip.getText());
+                 
                  if(delete){
                      JOptionPane.showMessageDialog(null, "Data berhasil di hapus");
                      loadTableGuru();
                      actionButton(true, false, false, true);
-                    actionField(false, false, false, false,false);
+                    actionField(false, false, false, false,false,false);
                     clearField();
                  }else{
                      JOptionPane.showMessageDialog(null, "Data gagal di hapus");
@@ -417,6 +486,22 @@ public class FormGuru extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cmbAksesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAksesActionPerformed
+        // TODO add your handling code here:
+//        if(cmbAkses.getSelectedItem().toString().equals("Guru") || cmbAkses.getSelectedItem().toString().equals("--Pilih--")){
+//            lblmatpel.setVisible(false);
+//            cmbMataPelajaran.setVisible(false);
+//        }else if(cmbAkses.getSelectedItem().toString().equals("Wali Kelas")){
+//            lblmatpel.setVisible(true);
+//            cmbMataPelajaran.setVisible(true);
+//        }
+        
+    }//GEN-LAST:event_cmbAksesActionPerformed
+
+    private void tblDetailGuruMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDetailGuruMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblDetailGuruMouseClicked
 
     /**
      * @param args the command line arguments
@@ -467,6 +552,35 @@ public class FormGuru extends javax.swing.JFrame {
         inpNip.setText(nip);
     }
     
+    private void loadTableDetailGuru() throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        DefaultTableModel model = new DefaultTableModel();
+        tblDetailGuru.setModel(model);
+        model.getDataVector().removeAllElements();
+        model.addColumn("NIP");
+        model.addColumn("Nama Guru");
+        model.addColumn("E-Mail");
+        model.addColumn("Akses");
+        model.addColumn("Kode Mata Pelajaran");
+        model.addColumn("Nama Mata Pelajaran");
+
+        try{
+            list = guruService.getAllDetailGuru();
+            for(int i = 0 ; i < list.size() ; i++){
+                Object[] obj = new Object[6];
+                obj[0] = list.get(i).get("nip");
+                obj[1] = list.get(i).get("nama_guru");
+                obj[2] = list.get(i).get("email");
+                obj[3] = list.get(i).get("akses");
+                obj[4] = list.get(i).get("kode_matpel");
+                obj[5] = list.get(i).get("nama_matpel");
+                model.addRow(obj);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
     private void loadTableGuru() throws Exception{
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         DefaultTableModel model = new DefaultTableModel();
@@ -476,16 +590,19 @@ public class FormGuru extends javax.swing.JFrame {
         model.addColumn("Nama Guru");
         model.addColumn("E-Mail");
         model.addColumn("Akses");
+//        model.addColumn("Kode Mata Pelajaran");
+//        model.addColumn("Nama Mata Pelajaran");
 
         try{
             list = guruService.getAllGuru();
             for(int i = 0 ; i < list.size() ; i++){
-                Object[] obj = new Object[5];
+                Object[] obj = new Object[4];
                 obj[0] = list.get(i).get("nip");
                 obj[1] = list.get(i).get("nama_guru");
                 obj[2] = list.get(i).get("email");
                 obj[3] = list.get(i).get("akses");
-                obj[4] = list.get(i).get("password");
+//                obj[4] = list.get(i).get("kode_matpel");
+//                obj[5] = list.get(i).get("nama_matpel");
                 model.addRow(obj);
             }
         }catch(Exception e){
@@ -532,6 +649,8 @@ public class FormGuru extends javax.swing.JFrame {
         inpNamaGuru.setText("");
         inpEmail.setText("");
         inpPassword.setText("");
+        cmbAkses.setSelectedItem("--Pilih--");
+        cmbMataPelajaran.setSelectedItem("--Pilih--");
     }
     
     private void actionButton(boolean tambah, boolean batal, boolean simpan, boolean keluar) {
@@ -541,12 +660,23 @@ public class FormGuru extends javax.swing.JFrame {
         btnKeluar.setEnabled(keluar);
     }
     
-    private void actionField(boolean nip, boolean nama_guru, boolean email, boolean password, boolean akses) {
+    private void actionField(boolean nip, boolean nama_guru, boolean email, boolean password, boolean akses, boolean matpel) {
         inpNip.setEnabled(nip);
         inpNamaGuru.setEnabled(nama_guru);
         inpEmail.setEnabled(email);
         inpPassword.setEnabled(password);
         cmbAkses.setEnabled(akses);
+        cmbMataPelajaran.setEnabled(matpel);
+    }
+    
+    private void loadMatpel() throws Exception{
+        cmbMataPelajaran.removeAllItems();
+        List<MataPelajaran> matpel = matpelService.getAllMatpel();
+        cmbMataPelajaran.addItem("--Pilih--");
+        
+        for(MataPelajaran result : matpel){
+            cmbMataPelajaran.addItem(result.getId_matpel() +" - "+result.getNama_matpel());
+        } 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -558,6 +688,7 @@ public class FormGuru extends javax.swing.JFrame {
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
     private javax.swing.JComboBox cmbAkses;
+    private javax.swing.JComboBox cmbMataPelajaran;
     private javax.swing.JTextField inpCari;
     private javax.swing.JTextField inpEmail;
     private javax.swing.JTextField inpNamaGuru;
@@ -570,13 +701,23 @@ public class FormGuru extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblEmail1;
+    private javax.swing.JLabel lblmatpel;
     private javax.swing.JTable tabelGuru;
+    private javax.swing.JTable tblDetailGuru;
     // End of variables declaration//GEN-END:variables
 
     private FormMenuUtama FormMenuUtama() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private String getCodeComboBox(String param) {
+        String code = "";
+        String[] arr = param.split(" ");
+	code = arr[0];	
+	return code;
     }
     
     

@@ -38,12 +38,14 @@ public class GuruService extends KoneksiDb {
     
     public boolean insertGuru(Guru data) throws Exception{
         boolean result = false;
+        boolean insertGuruMatpel = false;
         try {
             conn = getConnection();
             conn.setAutoCommit(false);
             guru.setConnection(conn);
             result = guru.insertGuru(data);
-            if(result) {
+            insertGuruMatpel = guru.insertGuruMatpel(data);
+            if(result && insertGuruMatpel){
                 conn.commit();
             }else{
                 conn.rollback();
@@ -77,6 +79,20 @@ public class GuruService extends KoneksiDb {
            conn = getConnection();
            guru.setConnection(conn);
            list = guru.getAllGuru();
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return list; 
+    }
+    
+    public List<Map<String,Object>> getAllDetailGuru() throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        try{
+           conn = getConnection();
+           guru.setConnection(conn);
+           list = guru.getAllDetailGuru();
         }catch(Exception e){
             throw new Exception(e.getMessage());
         }finally{
@@ -119,11 +135,22 @@ public class GuruService extends KoneksiDb {
     
     public boolean updateGuru(Guru data) throws Exception{
         boolean result = false;
+        List<Map<String,Object>> dataMatpel = new ArrayList<>();
+        boolean insert = false;
+        
         try{
             conn = getConnection();
             conn.setAutoCommit(false);
             guru.setConnection(conn);
             result = guru.updateGuru(data);
+            dataMatpel = guru.getMatpelGuru(data.getNip());
+            
+            for(int i = 0 ; i < dataMatpel.size() ; i++){
+                if(!dataMatpel.get(i).get("kode_matpel").equals(data.getMatpel())){
+                    insert = guru.insertGuruMatpel(data);
+                }
+            }
+            
             if(result) {
                 conn.commit();
             }else{
@@ -139,6 +166,28 @@ public class GuruService extends KoneksiDb {
     
     
     public boolean hapusGuru(String nip) throws Exception {
+        boolean delete = false;
+        boolean deleteMatpelGuru = false;
+        try{
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            guru.setConnection(conn);
+            delete = guru.hapusGuru(nip);
+            deleteMatpelGuru = guru.hapusMatpelGuru(nip);
+            if(delete && deleteMatpelGuru) {
+                conn.commit();
+            }else{
+                conn.rollback();
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            conn.close();
+        }
+        return delete;
+    }
+    
+    public boolean hapusMatpelGuru(String nip) throws Exception {
         boolean delete = false;
         try{
             conn = getConnection();

@@ -375,7 +375,6 @@ public class FormSiswa extends javax.swing.JFrame {
         // TODO add your handling code here:
         FormMenuUtama menuUtama = new FormMenuUtama();
         menuUtama.setVisible(true);
-        menuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
         menuUtama.setTitle("Menu Utama");
         this.setVisible(false);
     }//GEN-LAST:event_btnKeluarActionPerformed

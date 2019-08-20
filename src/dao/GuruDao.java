@@ -123,7 +123,7 @@ public class GuruDao {
     public List<Map<String,Object>> getAllGuru() throws Exception{
         List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         try{
-            ps = conn.prepareStatement("select * from nilai_siswa.guru");
+            ps = conn.prepareStatement("select * from guru");
             rs = ps.executeQuery();
             while(rs.next()){
                 Map<String,Object> map = new HashMap<>();
@@ -131,7 +131,34 @@ public class GuruDao {
                 map.put("nama_guru", rs.getString("nama_guru"));
                 map.put("email", rs.getString("email"));
                 map.put("akses", rs.getString("akses"));
-                map.put("password", rs.getString("password"));
+//                map.put("kode_matpel", rs.getString("kode_matpel"));
+//                map.put("nama_matpel", rs.getString("nama_matpel"));
+                list.add(map);
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+            rs.close();
+        }
+        return list; 
+    }
+    
+    public List<Map<String,Object>> getAllDetailGuru() throws Exception{
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        try{
+            ps = conn.prepareStatement("select a.nip, a.nama_guru, a.email, a.email , b.kode_matpel, c.nama_matpel, a.akses\n" +
+                "from guru a, matpel_guru b , matpel c\n" +
+                "where a.nip = b.nip and b.kode_matpel = c.kode_matpel");
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Map<String,Object> map = new HashMap<>();
+                map.put("nip", rs.getString("nip"));
+                map.put("nama_guru", rs.getString("nama_guru"));
+                map.put("email", rs.getString("email"));
+                map.put("akses", rs.getString("akses"));
+                map.put("kode_matpel", rs.getString("kode_matpel"));
+                map.put("nama_matpel", rs.getString("nama_matpel"));
                 list.add(map);
             }
         }catch(Exception e){
@@ -171,13 +198,12 @@ public class GuruDao {
     public boolean updateGuru(Guru data) throws Exception{
         boolean result = false;
         try{
-            String query = "update guru set nama_guru = ? , email = ? , password = ? , akses = ? where nip = ?";
+            String query = "update guru set nama_guru = ? , email = ? , akses = ? where nip = ?";
             ps = conn.prepareStatement(query);
             ps.setString(1, data.getNama_guru());
             ps.setString(2, data.getEmail());
-            ps.setString(3, data.getPassword());
-            ps.setInt(4, data.getAkses());
-            ps.setString(5, data.getNip());
+            ps.setInt(3, data.getAkses());
+            ps.setString(4, data.getNip());
             if(ps.executeUpdate() > 0){
                 result = true;
             }
@@ -202,5 +228,56 @@ public class GuruDao {
             ps.close();
         }
         return delete;
+    }
+     
+      public boolean hapusMatpelGuru(String nip) throws Exception {
+        boolean delete = false;
+        try{
+            ps = conn.prepareStatement("delete from matpel_guru  where nip = ?");
+            ps.setString(1, nip);
+            ps.executeUpdate();
+            delete = true;
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+        }
+        return delete;
+    }
+     
+    public boolean insertGuruMatpel(Guru data) throws Exception{
+        boolean insert = false;
+        try{
+            ps = conn.prepareStatement("insert into matpel_guru(nip, kode_matpel) values (?,?)");
+            ps.setString(1, data.getNip());
+            ps.setString(2, data.getMatpel());
+            ps.executeUpdate();
+            insert = true;
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }finally{
+            ps.close();
+        }
+        return insert;
+    }
+    
+    public List<Map<String,Object>> getMatpelGuru(String nip) throws Exception{
+        List<Map<String,Object>> list = new ArrayList<>();
+        try{
+            ps = conn.prepareStatement("select * from matpel_guru where nip = ?");
+            ps.setString(1, nip);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Map<String,Object> map = new HashMap<>();
+                map.put("kode_matpel",rs.getString("kode_matpel"));
+                list.add(map);
+            }
+        }catch(Exception e){
+        
+        }finally{
+            ps.close();
+            rs.close();
+        }
+        return list;
     }
 }

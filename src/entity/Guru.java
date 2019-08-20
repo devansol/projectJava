@@ -15,6 +15,7 @@ public class Guru {
     private String email;
     private String password;
     private int akses;
+    private String matpel;
 
     /**
      * @return the nip
@@ -89,6 +90,20 @@ public class Guru {
      */
     public void setAkses(int akses) {
         this.akses = akses;
+    }
+
+    /**
+     * @return the matpel
+     */
+    public String getMatpel() {
+        return matpel;
+    }
+
+    /**
+     * @param matpel the matpel to set
+     */
+    public void setMatpel(String matpel) {
+        this.matpel = matpel;
     }
     
 }
