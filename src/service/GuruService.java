@@ -57,7 +57,7 @@ public class GuruService extends KoneksiDb {
         return result;
     }
     
-    public Map<String,Object> loginGuru(Guru data) throws Exception {
+     public Map<String,Object> loginGuru(Guru data) throws Exception {
         Map<String,Object> map = new HashMap<>();
         try{
             conn = getConnection();
