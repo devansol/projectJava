@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2019 at 05:34 PM
+-- Generation Time: Aug 21, 2019 at 04:01 AM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.5.30
 
@@ -38,7 +38,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id_admin`, `nama_admin`, `email`, `password`) VALUES
-(1, 'admin', 'admin@gmail.com', 'admin123');
+(1, 'admin', 'admin@gmail.com', 'admin');
 
 -- --------------------------------------------------------
 
@@ -60,10 +60,8 @@ CREATE TABLE `guru` (
 --
 
 INSERT INTO `guru` (`id_guru`, `nip`, `nama_guru`, `email`, `password`, `akses`) VALUES
-(1, '120001', 'Karina Maharani', 'karina@gmail.com', 'asd123', 2),
-(2, '120002', 'Ilham Fadilah', 'iyaw@gmail.com', 'iyaw12345', 1),
-(3, '120003', 'Norman Adi', 'norman@gmail.com', 'norman123', 1),
-(6, '120004', 'Juki Yahya', 'juki@gmail.com', 'asd123', 2);
+(6, '120001', 'Riri Nurairi', 'riri@gmail.com', 'riri123', 2),
+(7, '120002', 'Dita Riri', 'dita@gmail.com', 'dita123', 1);
 
 -- --------------------------------------------------------
 
@@ -96,6 +94,26 @@ INSERT INTO `matpel` (`id_matpel`, `kode_matpel`, `nama_matpel`, `nip`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `matpel_guru`
+--
+
+CREATE TABLE `matpel_guru` (
+  `id_matpel_guru` int(11) NOT NULL,
+  `nip` varchar(6) NOT NULL,
+  `kode_matpel` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `matpel_guru`
+--
+
+INSERT INTO `matpel_guru` (`id_matpel_guru`, `nip`, `kode_matpel`) VALUES
+(1, '120001', 'MTK'),
+(4, '120002', 'MTK');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `nilai`
 --
 
@@ -106,16 +124,51 @@ CREATE TABLE `nilai` (
   `uts` int(11) DEFAULT NULL,
   `uas` int(11) NOT NULL,
   `tugas` int(11) NOT NULL,
-  `tahun_ajaran` varchar(20) NOT NULL
+  `tahun_ajaran` varchar(20) NOT NULL,
+  `semester` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `nilai`
 --
 
-INSERT INTO `nilai` (`id_nilai`, `nis`, `kode_matpel`, `uts`, `uas`, `tugas`, `tahun_ajaran`) VALUES
-(2, '150001', 'MTK', 100, 0, 0, '2018/2019'),
-(3, '150001', 'BIND', 100, 0, 0, '2018/2019');
+INSERT INTO `nilai` (`id_nilai`, `nis`, `kode_matpel`, `uts`, `uas`, `tugas`, `tahun_ajaran`, `semester`) VALUES
+(15, '150001', 'MTK', 90, 90, 90, '2019/2020', 1),
+(16, '150001', 'BIND', 100, 80, 90, '2019/2020', 1),
+(17, '150001', 'BING', 0, 0, 0, '2019/2020', 1),
+(18, '150001', 'IPA', 0, 0, 0, '2019/2020', 1),
+(19, '150001', 'IPS', 0, 0, 0, '2019/2020', 1),
+(20, '150001', 'PA', 0, 0, 0, '2019/2020', 1),
+(21, '150001', 'PKN', 0, 0, 0, '2019/2020', 1),
+(22, '150001', 'SBK', 0, 0, 0, '2019/2020', 1),
+(23, '150001', 'PJORK', 0, 0, 0, '2019/2020', 1),
+(24, '150001', 'MTK', 0, 0, 0, '2019/2020', 2),
+(25, '150001', 'BIND', 0, 0, 0, '2019/2020', 2),
+(26, '150001', 'BING', 0, 0, 0, '2019/2020', 2),
+(27, '150001', 'IPA', 0, 0, 0, '2019/2020', 2),
+(28, '150001', 'IPS', 0, 0, 0, '2019/2020', 2),
+(29, '150001', 'PA', 0, 0, 0, '2019/2020', 2),
+(30, '150001', 'PKN', 0, 0, 0, '2019/2020', 2),
+(31, '150001', 'SBK', 0, 0, 0, '2019/2020', 2),
+(32, '150001', 'PJORK', 0, 0, 0, '2019/2020', 2),
+(33, '150002', 'MTK', 0, 0, 0, '2019/2020', 1),
+(34, '150002', 'BIND', 0, 0, 0, '2019/2020', 1),
+(35, '150002', 'BING', 0, 0, 0, '2019/2020', 1),
+(36, '150002', 'IPA', 0, 0, 0, '2019/2020', 1),
+(37, '150002', 'IPS', 0, 0, 0, '2019/2020', 1),
+(38, '150002', 'PA', 0, 0, 0, '2019/2020', 1),
+(39, '150002', 'PKN', 0, 0, 0, '2019/2020', 1),
+(40, '150002', 'SBK', 0, 0, 0, '2019/2020', 1),
+(41, '150002', 'PJORK', 0, 0, 0, '2019/2020', 1),
+(42, '150002', 'MTK', 0, 0, 0, '2019/2020', 2),
+(43, '150002', 'BIND', 0, 0, 0, '2019/2020', 2),
+(44, '150002', 'BING', 0, 0, 0, '2019/2020', 2),
+(45, '150002', 'IPA', 0, 0, 0, '2019/2020', 2),
+(46, '150002', 'IPS', 0, 0, 0, '2019/2020', 2),
+(47, '150002', 'PA', 0, 0, 0, '2019/2020', 2),
+(48, '150002', 'PKN', 0, 0, 0, '2019/2020', 2),
+(49, '150002', 'SBK', 0, 0, 0, '2019/2020', 2),
+(50, '150002', 'PJORK', 0, 0, 0, '2019/2020', 2);
 
 -- --------------------------------------------------------
 
@@ -129,18 +182,16 @@ CREATE TABLE `siswa` (
   `jenis_kelamin` varchar(1) NOT NULL,
   `nama_siswa` varchar(50) NOT NULL,
   `alamat_siswa` text NOT NULL,
-  `kelas` int(11) DEFAULT NULL
+  `kelas` int(11) DEFAULT NULL,
+  `tahun_ajaran` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `siswa`
 --
 
-INSERT INTO `siswa` (`id_siswa`, `nis`, `jenis_kelamin`, `nama_siswa`, `alamat_siswa`, `kelas`) VALUES
-(1, '150001', 'L', 'Muhammad Firdaus', 'Jl. Swakarsa 1 No 42 RT 03 / RW 04, Jatibening Baru, Pondok Gede Bekasi', 10),
-(2, '150002', 'L', 'Jajang Nurjaman', 'Jl. Raya Jakarta No 42 RT 04 / RW 01\nJatibening Baru, Pondok Gede, Bekasi', 10),
-(3, '150003', 'P', 'Lala Maharani', 'Jakarta Selatan', 10),
-(4, '150004', 'L', 'Jamal Jamaludin', 'Bekasi', 12);
+INSERT INTO `siswa` (`id_siswa`, `nis`, `jenis_kelamin`, `nama_siswa`, `alamat_siswa`, `kelas`, `tahun_ajaran`) VALUES
+(12, '150001', 'P', 'Jingga', 'Jakarta', 5, '2019/2020');
 
 --
 -- Indexes for dumped tables
@@ -163,6 +214,12 @@ ALTER TABLE `guru`
 --
 ALTER TABLE `matpel`
   ADD PRIMARY KEY (`id_matpel`);
+
+--
+-- Indexes for table `matpel_guru`
+--
+ALTER TABLE `matpel_guru`
+  ADD PRIMARY KEY (`id_matpel_guru`);
 
 --
 -- Indexes for table `nilai`
@@ -189,22 +246,27 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `guru`
 --
 ALTER TABLE `guru`
-  MODIFY `id_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `matpel`
 --
 ALTER TABLE `matpel`
   MODIFY `id_matpel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
+-- AUTO_INCREMENT for table `matpel_guru`
+--
+ALTER TABLE `matpel_guru`
+  MODIFY `id_matpel_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT for table `nilai`
 --
 ALTER TABLE `nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 --
 -- AUTO_INCREMENT for table `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
