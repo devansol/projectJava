@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.1000000000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="268"/>
+	<property name="ireport.y" value="144"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -88,9 +88,18 @@ WHERE a.nis = b.nis AND b.id_matpel = c.id_matpel]]>
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT a.nis, a.nama_siswa, a.kelas , b.uts,b.uas,b.tugas, c.nama_matpel, b.tahun_ajaran , round((b.uts + b.uas + b.tugas) / 3,2) as total
-FROM nilai_siswa.siswa a,nilai_siswa.nilai b,nilai_siswa.matpel c 
-WHERE a.nis = b.nis AND b.kode_matpel = c.kode_matpel and a.nis = $P{nis} and b.tahun_ajaran = $P{tahun_ajaran} and b.semester = $P{semester}]]>
+		<![CDATA[SELECT a.nis,a.nama_siswa,a.kelas,b.uts,b.uas,b.tugas, c.nama_matpel,b.tahun_ajaran,round( ( b.uts + b.uas + b.tugas ) /3 ) AS total,(select sum(round( ( bb.uts + bb.uas + bb.tugas ) /3 )) from nilai_siswa.nilai bb,nilai_siswa.siswa a,nilai_siswa.matpel c  where bb.nis = a.nis and bb.kode_matpel = c.kode_matpel) as jumlah FROM nilai_siswa.siswa a,
+	nilai_siswa.nilai b,
+	nilai_siswa.matpel c 
+WHERE a.nis = b.nis 
+	AND b.kode_matpel = c.kode_matpel 
+	AND a.nis = $P{nis}
+	AND b.tahun_ajaran = $P{tahun_ajaran}
+	AND b.semester = $P{semester}       
+
+
+
+]]>
 	</queryString>
 	<field name="nis" class="java.lang.String"/>
 	<field name="nama_siswa" class="java.lang.String"/>
@@ -101,20 +110,27 @@ WHERE a.nis = b.nis AND b.kode_matpel = c.kode_matpel and a.nis = $P{nis} and b.
 	<field name="tugas" class="java.lang.String"/>
 	<field name="total" class="java.lang.String"/>
 	<field name="kelas" class="java.lang.String"/>
+	<field name="jumlah" class="java.lang.String"/>
+	<variable name="TOTAL" class="java.lang.String" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="jumlah_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{jumlah}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="42" splitType="Stretch">
 			<staticText>
-				<reportElement x="224" y="17" width="131" height="27"/>
+				<reportElement x="223" y="0" width="131" height="27"/>
 				<textElement>
 					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[RAPOT SISWA]]></text>
 			</staticText>
 			<line>
-				<reportElement x="25" y="62" width="501" height="1"/>
+				<reportElement x="25" y="33" width="501" height="1"/>
 				<graphicElement>
 					<pen lineWidth="3.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -122,32 +138,32 @@ WHERE a.nis = b.nis AND b.kode_matpel = c.kode_matpel and a.nis = $P{nis} and b.
 		</band>
 	</title>
 	<pageHeader>
-		<band height="101" splitType="Stretch">
+		<band height="124" splitType="Stretch">
 			<staticText>
 				<reportElement x="25" y="0" width="33" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NIS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="25" y="22" width="62" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Siswa]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="149" y="24" width="179" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_siswa}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="348" y="0" width="81" height="20"/>
+				<reportElement x="353" y="0" width="81" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tahun Ajaran]]></text>
 			</staticText>
@@ -161,7 +177,7 @@ WHERE a.nis = b.nis AND b.kode_matpel = c.kode_matpel and a.nis = $P{nis} and b.
 			<staticText>
 				<reportElement x="133" y="26" width="8" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
@@ -173,7 +189,7 @@ WHERE a.nis = b.nis AND b.kode_matpel = c.kode_matpel and a.nis = $P{nis} and b.
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="25" y="97" width="501" height="1"/>
+				<reportElement x="25" y="120" width="501" height="1"/>
 				<graphicElement>
 					<pen lineWidth="3.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -181,137 +197,158 @@ WHERE a.nis = b.nis AND b.kode_matpel = c.kode_matpel and a.nis = $P{nis} and b.
 			<textField>
 				<reportElement x="149" y="0" width="100" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nis}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="453" y="0" width="80" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{tahun_ajaran}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="348" y="24" width="81" height="20"/>
+				<reportElement x="353" y="24" width="81" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Semester]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="438" y="25" width="8" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="453" y="25" width="80" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{semester}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="25" y="48" width="92" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Sekolah]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="25" y="72" width="92" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Alamat Sekolah]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="133" y="49" width="8" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="133" y="72" width="8" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="348" y="49" width="81" height="20"/>
+				<reportElement x="354" y="49" width="81" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Kelas]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="438" y="49" width="8" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="453" y="49" width="80" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{kelas}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="149" y="49" width="205" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SDN Ciracas 07 Pagi Jakarta Timur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="72" width="392" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gg. Kramat RT.12 / RW. 10, CIracas, Kec. Ciracas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="95" width="392" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jakarta Timur, Daerah Khusus Ibukota Jakarta 13740]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="45" splitType="Stretch">
+		<band height="42" splitType="Stretch">
 			<staticText>
-				<reportElement x="25" y="25" width="33" height="20"/>
+				<reportElement x="25" y="21" width="33" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[No]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="66" y="25" width="181" height="20"/>
+				<reportElement x="66" y="21" width="181" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mata Pelajaran]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="302" y="0" width="33" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nilai]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="262" y="25" width="24" height="20"/>
+				<reportElement x="262" y="21" width="24" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[UTS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="306" y="25" width="32" height="20"/>
+				<reportElement x="306" y="21" width="32" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[UAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="358" y="25" width="65" height="20"/>
+				<reportElement x="358" y="21" width="65" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tugas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="444" y="25" width="65" height="20"/>
+				<reportElement x="444" y="21" width="65" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
@@ -322,35 +359,35 @@ WHERE a.nis = b.nis AND b.kode_matpel = c.kode_matpel and a.nis = $P{nis} and b.
 			<textField>
 				<reportElement x="67" y="0" width="179" height="20"/>
 				<textElement>
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_matpel}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="262" y="0" width="24" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{uts}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="306" y="0" width="33" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{uas}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="358" y="1" width="65" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tugas}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="444" y="1" width="63" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
@@ -360,24 +397,24 @@ WHERE a.nis = b.nis AND b.kode_matpel = c.kode_matpel and a.nis = $P{nis} and b.
 			<textField>
 				<reportElement x="25" y="0" width="33" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="8" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="4" splitType="Stretch"/>
+		<band height="1" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="353" splitType="Stretch">
+		<band height="283" splitType="Stretch">
 			<staticText>
 				<reportElement x="277" y="22" width="167" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Jumlah Nilai Prestasi Hasil Belajar]]></text>
 			</staticText>
@@ -388,209 +425,216 @@ WHERE a.nis = b.nis AND b.kode_matpel = c.kode_matpel and a.nis = $P{nis} and b.
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="34" y="59" width="33" height="20"/>
+				<reportElement x="34" y="46" width="33" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[No]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="34" y="79" width="33" height="20"/>
+				<reportElement x="34" y="66" width="33" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="false"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[1]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="67" y="59" width="151" height="20"/>
+				<reportElement x="67" y="46" width="151" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Kepribadian]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="244" y="59" width="89" height="20"/>
+				<reportElement x="244" y="46" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nilai]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="67" y="79" width="151" height="20"/>
+				<reportElement x="67" y="66" width="151" height="20"/>
 				<textElement>
-					<font size="12" isBold="false"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Sikap]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="34" y="99" width="33" height="20"/>
+				<reportElement x="34" y="86" width="33" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="false"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[2]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="34" y="119" width="33" height="20"/>
+				<reportElement x="34" y="106" width="33" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="false"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[3]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="67" y="99" width="151" height="20"/>
+				<reportElement x="67" y="86" width="151" height="20"/>
 				<textElement>
-					<font size="12" isBold="false"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Kerajinan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="67" y="119" width="151" height="20"/>
+				<reportElement x="67" y="106" width="151" height="20"/>
 				<textElement>
-					<font size="12" isBold="false"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Kebersihan dan Kerapihan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="244" y="79" width="89" height="20"/>
+				<reportElement x="244" y="66" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[..................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="244" y="99" width="89" height="20"/>
+				<reportElement x="244" y="86" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[..................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="245" y="119" width="89" height="20"/>
+				<reportElement x="245" y="106" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[..................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="39" y="199" width="414" height="20"/>
+				<reportElement x="39" y="135" width="414" height="20"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Naik Kelas / Tinggal Kelas .............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="39" y="247" width="140" height="20"/>
+				<reportElement x="39" y="176" width="140" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Orang tua / wali]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="36" y="325" width="160" height="20"/>
+				<reportElement x="25" y="254" width="179" height="20"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[(.............................................)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="218" y="247" width="140" height="20"/>
+				<reportElement x="218" y="176" width="140" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Kepala Sekolah]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="386" y="247" width="140" height="20"/>
+				<reportElement x="386" y="176" width="140" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Guru Kelas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="218" y="324" width="160" height="20"/>
+				<reportElement x="204" y="253" width="174" height="20"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[(.............................................)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="386" y="325" width="160" height="20"/>
+				<reportElement x="378" y="254" width="177" height="20"/>
 				<textElement>
 					<font size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[(.............................................)]]></text>
 			</staticText>
 			<line>
-				<reportElement x="36" y="79" width="473" height="1"/>
+				<reportElement x="36" y="66" width="473" height="1"/>
 			</line>
 			<line>
-				<reportElement x="35" y="98" width="472" height="1"/>
+				<reportElement x="35" y="85" width="472" height="1"/>
 			</line>
 			<line>
-				<reportElement x="35" y="118" width="472" height="2"/>
+				<reportElement x="35" y="105" width="472" height="2"/>
 			</line>
 			<line>
-				<reportElement x="35" y="139" width="472" height="1"/>
+				<reportElement x="35" y="126" width="472" height="1"/>
 			</line>
 			<line>
-				<reportElement x="35" y="59" width="472" height="1"/>
+				<reportElement x="35" y="46" width="472" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="333" y="99" width="89" height="20"/>
+				<reportElement x="333" y="86" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Sakit]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="333" y="119" width="89" height="20"/>
+				<reportElement x="333" y="106" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Alfa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="333" y="60" width="89" height="20"/>
+				<reportElement x="333" y="47" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Kehadiran]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="333" y="80" width="89" height="20"/>
+				<reportElement x="333" y="67" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Izin]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="420" y="60" width="89" height="20"/>
+				<reportElement x="420" y="47" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nilai]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="420" y="80" width="89" height="20"/>
+				<reportElement x="420" y="67" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[..................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="420" y="99" width="89" height="20"/>
+				<reportElement x="420" y="86" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[..................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="420" y="118" width="89" height="20"/>
+				<reportElement x="420" y="105" width="89" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[..................]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="444" y="22" width="63" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jumlah}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

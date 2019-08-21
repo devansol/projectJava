@@ -9,8 +9,11 @@ import entity.Session;
 import entity.Siswa;
 import java.awt.Dimension;
 import java.io.File;
+import static java.lang.Thread.sleep;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +46,7 @@ public class FormCetakRapot extends javax.swing.JFrame {
         siswaService = new SiswaService();
         loadSiswa();
         tahunAjaran();
-        
+        tanggalSekarang();
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(menuUser);
         menuBar.add(status);
@@ -208,7 +211,40 @@ public class FormCetakRapot extends javax.swing.JFrame {
 //        formMenuUtama.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(false);
     }//GEN-LAST:event_btnKeluarActionPerformed
-
+    
+    public void tanggalSekarang(){     
+        Thread clock = new Thread(){
+            public void run(){
+                for(;;){
+                    Calendar cal = new GregorianCalendar();
+                    int tanggal = cal.get(Calendar.DAY_OF_MONTH);
+                    int bulan1 = cal.get(Calendar.MONTH);
+                    int tahun = cal.get(Calendar.YEAR);
+                    java.util.Date d = new java.util.Date();
+                    String bulan = "MMMM";
+                    String dayweek = "EEEE";
+                    String jam = "HH";
+                    String menit = "mm";
+                    String detik = "ss";
+                    SimpleDateFormat sdf = new SimpleDateFormat(dayweek);
+                    SimpleDateFormat bln = new SimpleDateFormat(bulan);
+                    SimpleDateFormat hr = new SimpleDateFormat(jam);
+                    SimpleDateFormat mnt = new SimpleDateFormat(menit);
+                    SimpleDateFormat sd = new SimpleDateFormat(detik);
+                    date.setText("Tanggal: "+sdf.format(d)+", "+tanggal+" "+(bln.format(d))+" "+tahun+"   Waktu: "+hr.format(d)+":"+(mnt.format(d))+":"+sd.format(d));
+//                    tgl_resep.setText(""+sdf.format(d)+", "+tanggal+" / "+(bulan1+1)+" / "+tahun);
+//                    tgl_rekam_medis.setText(tanggal+"-"+(bulan1+1)+"-"+tahun);
+                    try{
+                        sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(FormMenuUtama.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };        
+        clock.start();        
+    }
+    
     private void btnCetakRapotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakRapotActionPerformed
 
         String nis = getCodeComboBox(cmbNis.getSelectedItem().toString());
